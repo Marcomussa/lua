@@ -1,24 +1,26 @@
 function addToCart(productId) {
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const selectedSize = document.querySelector('.select-container select:nth-child(1)').value;
+    const selectedColor = document.querySelector('.select-container select:nth-child(2)').value;
     
-    // Buscar si el producto ya está en el carrito
-    const existingProductIndex = cartItems.findIndex(item => item.productId === productId && item.size === (productId === 1 ? "Talla S" : "Talla L"));
-    
+    // Check if the product already exists in the cart
+    const existingProductIndex = cartItems.findIndex(item => item.productId === productId && item.size === selectedSize && item.color === selectedColor);
     if (existingProductIndex !== -1) {
-        // Si el producto ya está en el carrito, aumentar la cantidad
-        cartItems[existingProductIndex].quantity += 1;
+        // If the product already exists, update its quantity
+        cartItems[existingProductIndex].quantity++;
     } else {
-        // Si el producto no está en el carrito, agregarlo
+        // If the product doesn't exist, add it to the cart
         const product = {
             productId: productId,
-            name: `Producto ${productId}`,
-            price: productId === 1 ? 10 : 15,
+            name: `Lúa Cup`,            
+            price: 450,
             quantity: 1,
-            size: productId === 1 ? "Talla S" : "Talla L"
+            size: selectedSize,
+            color: selectedColor
         };
         cartItems.push(product);
     }
 
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+    updateTotal();
 }
