@@ -19414,3 +19414,7 @@ select {
 .product-video-container {
   margin-top: 50px !important;
 }
+
+.illustration-rotation {
+  width: 300px;
+}
