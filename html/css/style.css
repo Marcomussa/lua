@@ -19418,3 +19418,7 @@ select {
 .illustration-rotation {
   width: 300px;
 }
+
+.select-size {
+  width: 100% !important;
+}

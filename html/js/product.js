@@ -1,7 +1,6 @@
 function addToCart(productId) {
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     const selectedSize = document.querySelector('.select-container select:nth-child(1)').value;
-    const selectedColor = document.querySelector('.select-container select:nth-child(2)').value;
     
     // Check if the product already exists in the cart
     const existingProductIndex = cartItems.findIndex(item => item.productId === productId && item.size === selectedSize && item.color === selectedColor);
@@ -16,7 +15,6 @@ function addToCart(productId) {
             price: 450,
             quantity: 1,
             size: selectedSize,
-            color: selectedColor
         };
         cartItems.push(product);
     }
@@ -24,3 +22,25 @@ function addToCart(productId) {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
     updateTotal();
 }
+
+// if($('.accordion-box').length){
+//     $(".accordion-box").on('click', '.acc-btn', function() {
+        
+//         var outerBox = $(this).parents('.accordion-box');
+//         var target = $(this).parents('.accordion');
+        
+//         if($(this).hasClass('active')!==true){
+//             $(outerBox).find('.accordion .acc-btn').removeClass('active');
+//         }
+        
+//         if ($(this).next('.acc-content').is(':visible')){
+//             return false;
+//         }else{
+//             $(this).addClass('active');
+//             $(outerBox).children('.accordion').removeClass('active-block');
+//             $(outerBox).find('.accordion').children('.acc-content').slideUp(300);
+//             target.addClass('active-block');
+//             $(this).next('.acc-content').slideDown(300);	
+//         }
+//     });	
+// }

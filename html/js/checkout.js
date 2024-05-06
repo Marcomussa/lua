@@ -19,7 +19,7 @@ function renderCartItems() {
             itemElement.classList.add('cart-item');
 
             const quantitySpan = document.createElement('span');
-            quantitySpan.textContent = `${item.quantity} x ${item.name} - ${item.size} - ${item.color} - $${item.price * item.quantity}`;
+            quantitySpan.textContent = `${item.quantity} x ${item.name} - ${item.size} - $${item.price * item.quantity}`;
             
 
             const increaseButton = document.createElement('button');
@@ -27,7 +27,7 @@ function renderCartItems() {
             increaseButton.textContent = '+';
             increaseButton.addEventListener('click', function() {
                 cartItems[index].quantity++;
-                quantitySpan.textContent = `${item.quantity} x ${item.name} - ${item.size} - ${item.color} - $${item.price * item.quantity}`
+                quantitySpan.textContent = `${item.quantity} x ${item.name} - ${item.size} - $${item.price * item.quantity}`
                 localStorage.setItem('cartItems', JSON.stringify(cartItems));
                 updateTotal();
             });
@@ -38,7 +38,7 @@ function renderCartItems() {
             decreaseButton.addEventListener('click', function() {
                 if (cartItems[index].quantity > 1) {
                     cartItems[index].quantity--;
-                    quantitySpan.textContent = `${item.quantity} x ${item.name} - ${item.size} - ${item.color} - $${item.price * item.quantity}`;
+                    quantitySpan.textContent = `${item.quantity} x ${item.name} - ${item.size} - $${item.price * item.quantity}`;
                     localStorage.setItem('cartItems', JSON.stringify(cartItems));
                     updateTotal();
                 }
