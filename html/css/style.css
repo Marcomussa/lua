@@ -19422,3 +19422,9 @@ select {
 .select-size {
   width: 100% !important;
 }
+
+@media only screen and (max-width: 450px){
+  body > div.page-layout > section.p-0.mt-1 > div > div {
+    align-items: center;
+  }
+}

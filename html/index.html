@@ -11,17 +11,17 @@
       content=""
     />
     <!-- favicon icon -->
-    <link rel="shortcut icon" href="images/favicon.png" />
-    <link rel="apple-touch-icon" href="images/apple-touch-icon-57x57.png" />
+    <link rel="shortcut icon" href="images/lua-icon.jpg" />
+    <link rel="apple-touch-icon" href="images/lua-icon.jpg" />
     <link
       rel="apple-touch-icon"
       sizes="72x72"
-      href="images/apple-touch-icon-72x72.png"
+      href="images/lua-icon.jpg"
     />
     <link
       rel="apple-touch-icon"
       sizes="114x114"
-      href="images/apple-touch-icon-114x114.png"
+      href="images/lua-icon.jpg"
     />
     <!-- google fonts preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
@@ -39,6 +39,10 @@
     data-mobile-nav-bg-color="#2E3844"
     class="custom-cursor"
   >
+  <div class="cursor-page-inner">
+    <div class="circle-cursor circle-cursor-inner"></div>
+    <div class="circle-cursor circle-cursor-outer"></div>
+  </div>
     <!-- start cursor 
     <div class="cursor-page-inner">
       <div class="circle-cursor circle-cursor-inner"></div>
@@ -92,38 +96,40 @@
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a href="javascript:void(0)" class="nav-link">Home</a>
+                  <a href="index.html" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a href="javascript:void(0)" class="nav-link"
+                  <a href="#acerca-de" class="nav-link"
                     >Acerca De</a
                   >
                 </li>
                 <li class="nav-item">
-                  <a href="javascript:void(0)" class="nav-link"
+                  <a href="#beneficios" class="nav-link"
                     >Beneficios</a
                   >
                 </li>
                 <li class="nav-item">
-                  <a href="javascript:void(0)" class="nav-link"
+                  <a href="/html/luacup.html" class="nav-link"
                     >Adquirí tu Lúa Cup</a
                   >
                 </li>
                 <li class="nav-item">
-                  <a href="javascript:void(0)" class="nav-link"
-                    >Instructivo</a
-                  >
+                  <a
+                  href="../lua-cup-instructivo.pdf"
+                  download="lua-cup-instructivo.pdf"
+                  class="nav-link"
+                  >Instructivo</a>
                 </li>
                 <li class="nav-item">
-                  <a href="javascript:void(0)" class="nav-link"
+                  <a href="#faqs" class="nav-link"
                     >FAQs</a
                   >
                 </li>
                 <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link"
-                      >Contacto</a
-                    >
-                  </li>
+                  <a href="#contacto" class="nav-link"
+                    >Contacto</a
+                  >
+                </li>
               </ul>
             </div>
           </div>
@@ -240,7 +246,7 @@
         </section>
         <!-- end banner slider -->
     <!-- start banner slider -->
-    <section class="p-0 mt-1">
+    <section class="p-0 mt-1" id="acerca-de">
       <div class="container-fluid p-0">
         <div class="row align-items-center g-0">
           <div
@@ -248,7 +254,7 @@
             data-anime='{ "effect": "slide", "color": "#f2e0dc", "direction":"lr", "easing": "easeOutQuad", "duration": 600, "delay":500}'
           >
             <img
-              src="images/main.png"
+              src="https://via.placeholder.com/960x630"
               class="border-radius-rb-50px"
               alt=""
             />
@@ -307,7 +313,7 @@
     <section class="border-bottom border-color-extra-medium-gray pt-4 pb-4">
       <div class="container">
         <div
-          class="row align-items-center row-cols-1 row-cols-lg-3 row-cols-md-2 justify-content-center"
+          class="row row-cols-1 row-cols-lg-3 row-cols-md-2 justify-content-center"
           data-anime='{ "el": "childs", "translateX": [-20, 0], "opacity": [0,1], "duration": 600, "delay": 300, "staggervalue": 300, "easing": "easeOutQuad" }'
         >
           <!-- start process step item -->
@@ -349,7 +355,7 @@
                 <span class="d-block text-dark-gray fs-24 alt-font"
                   >¿Materiales?</span
                 >
-                <p>Esta hecha de silicona</p>
+                <p>Lúa Cup está hecha de silicona de grado médico para evitar infecciones. Además, es reutilizable y tiene una duración aproximada de 10 años.</p>
               </div>
             </div>
           </div>
@@ -369,7 +375,7 @@
                 <span class="d-block text-dark-gray fs-24 alt-font"
                   >¿Para quien es?</span
                 >
-                <p>Para tod@ aquel que menstrúa</p>
+                <p>Para todas las mujeres que menstrúan.</p>
               </div>
             </div>
           </div>
@@ -379,7 +385,7 @@
     </section>
     <!-- end section -->
     <!-- start section -->
-    <section class="overlap-height">
+    <section class="overlap-height" id="beneficios">
       <div class="container overlap-gap-section">
         <div
           class="row justify-content-center align-items-center mb-6"
@@ -688,10 +694,10 @@
               <figcaption
                 class="d-flex flex-column align-items-start justify-content-center position-absolute left-0px top-0px w-100 h-100 z-index-1 p-50px sm-p-6"
               >
-                <a href="/">
+                <a href="luacup.html">
                     <span
                   class="ps-15px pe-15px pt-5px pb-5px text-uppercase text-dark-gray fs-13 lh-24 fw-700 border-radius-4px bg-white d-inline-block"
-                  >Ver Instructivo</span
+                  >Conocé Mas</span
                 >
                 </a>
                 <div class="d-flex w-100 align-items-center mt-auto">
@@ -719,10 +725,10 @@
               <figcaption
                 class="d-flex flex-column align-items-start justify-content-center position-absolute left-0px top-0px w-100 h-100 z-index-1 p-50px sm-p-6"
               >
-                <a href="">
+                <a href="luacup.html">
                     <span
                   class="ps-15px pe-15px pt-5px pb-5px text-uppercase text-dark-gray fs-13 lh-24 fw-700 border-radius-4px bg-white d-inline-block"
-                  >Ver Instructivo</span
+                  >Conocé Mas</span
                 >
                 </a>
                 <div class="d-flex w-100 align-items-center mt-auto">
@@ -777,7 +783,8 @@
             <h6 class="text-dark-gray alt-font">
               Descarga el
               <a
-                href="demo-beauty-salon-services.html"
+                href="../lua-cup-instructivo.pdf"
+                download="lua-cup-instructivo.pdf"
                 class="text-dark-gray text-dark-gray-hover text-decoration-line-bottom-medium"
                 >Instructivo</a
               >
@@ -791,11 +798,12 @@
     <section
       class="cover-background p-0"
       style="background-image: url('images/demo-beauty-salon-home-bg-04.jpg')"
+      id="faqs"
     >
       <div class="container">
         <div class="row">
           <div
-            class="col-lg-6 align-self-end order-2 order-lg-1"
+            class="col-lg-6 align-self-center order-2 order-lg-1"
             data-anime='{ "el": "childs", "translateY": [100, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
           >
             <div class="outside-box-left-5 outside-box-right-5">
@@ -834,23 +842,23 @@
                     <div
                       class="accordion-title mb-0 position-relative text-white"
                     >
-                      <i class="feather icon-feather-minus"></i
+                      <i class="feather icon-feather-plus"></i
                       ><span class="fw-500 fs-19"
-                        >Lorem ipsum dolor sit amet consectetur.</span
+                        >¿Qué es la copa menstrual?</span
                       >
                     </div>
                   </a>
                 </div>
                 <div
                   id="accordion-style-02-01"
-                  class="accordion-collapse collapse show"
+                  class="accordion-collapse collapse"
                   data-bs-parent="#accordion-style-02"
                 >
                   <div
                     class="accordion-body last-paragraph-no-margin border-bottom border-color-transparent-white-light"
                   >
                     <p class="text-white opacity-5">
-                        Lorem ipsum dolor sit amet consectetur.
+                      Una copa menstrual es un tipo de producto de higiene femenina reutilizable. Es una copa pequeña y flexible en forma de embudo hecha de 100% silicona de grado médico que se inserta en la vagina para atrapar y recoger la sangre de gestión menstrual.
                     </p>
                   </div>
                 </div>
@@ -871,7 +879,7 @@
                     >
                       <i class="feather icon-feather-plus"></i
                       ><span class="fw-500 fs-19"
-                        >Lorem ipsum dolor sit amet.</span
+                        >¿Por qué sustituir las toallas desechables por la copa menstrual?</span
                       >
                     </div>
                   </a>
@@ -883,11 +891,368 @@
                 >
                   <div class="accordion-body last-paragraph-no-margin">
                     <p class="text-white opacity-5">
-                      Lorem ipsum dolor sit amet.
+                      Las copas pueden recoger más sangre que otros métodos, lo que lleva a muchas mujeres a usarlas como una alternativa ecológica a los tampones. Y dependiendo de tu flujo, puedes usar tú copa hasta por 12 horas.
                     </p>
                   </div>
                 </div>
               </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-03"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Cuanto tiempo puedo usar la copa?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-03"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      La puedes utilizar durante 12 horas consecutivas, dependiendo de tu flujo menstrual, y la sigues utilizando la misma hasta por 10 años
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-04"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Cuanto tiempo puedo usar la copa?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-04"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      Hasta 10 años
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-05"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Cómo utilizar la copa?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-05"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      Lo ideal es que lo hagas sentada en un baño o parada con las piernas abiertas, en la regadera te será más fácil, ya que la copa podría resbalar mejor. – Toma la copa con una mano y haz un doblez, con los dedos de tu otra mano abre tus labios vaginales, te será más fácil introducirla si haces esto. – Introduce la copa por tu canal vaginal, puedes moverla un poco hacia los lados para que entre más fácil. – Empuja hacia atrás y no sueltes el doblez hasta que sientas que ya está casi toda o toda dentro, cuando sientas que toca el cérvix o que ya no puede entrar más puedes soltarla… entonces se extenderá de nuevo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-06"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Como sacar la copa?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-06"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      Primero puja un poco para que salga, luego jala la varilla plástica un poco, ayúdate con el dedo a sacar el aire, después, dóblala un poco y jálala y así puedas sacar la copa a media velocidad y con cuidado.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-07"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Como higienizar la copa?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-07"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      La puedes lavar con jabón neutro o seguir esterizándola.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-08"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Como esterilizar la copa?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-08"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      Lo puedes hacer en un recipiente por 5 minutos o con esterilizador de copas menstruales
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-09"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿De qué está hecha la copa?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-09"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      100% silicona médica
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-10"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Se me puede perder en el cuerpo?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-10"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      La copa no se puede perder en el cuerpo
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-11"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Puedo tener relaciones sexuales con ella?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-11"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      No puedes tener relaciones sexuales con la copa menstrual dentro de tu cuerpo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-12"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Sirve como método anticonceptivo?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-12"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      Las copas menstruales no sirven como método anticonceptivo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <div class="accordion-header">
+                  <a
+                    href="#"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-style-02-13"
+                    aria-expanded="false"
+                    data-bs-parent="#accordion-style-02"
+                  >
+                    <div
+                      class="accordion-title mb-0 position-relative text-white"
+                    >
+                      <i class="feather icon-feather-plus"></i
+                      ><span class="fw-500 fs-19"
+                        >¿Puedo dormir con ella?</span
+                      >
+                    </div>
+                  </a>
+                </div>
+                <div
+                  id="accordion-style-02-13"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-style-02"
+                >
+                  <div class="accordion-body last-paragraph-no-margin">
+                    <p class="text-white opacity-5">
+                      Si, puedes dormir, nadar y hacer ejercicio con ella y te será más placentero y cómodo que cualquier otro producto
+Lúa Cup es un producto de uso íntimo y de higiene personal. No pueden intercambiarse o devolverse. NO comparta su Lúa Cup con nadie.
+Si tiene algún problema ginecológico, consulte a su médico antes de utilizarla.
+No contiene látex, plástico ni BPA
+Almacenarla en un lugar fresco y seco
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
               <!-- end accordion item -->
             </div>
             <a
@@ -910,7 +1275,7 @@
     </section>
     <!-- end section -->
     <!-- start section -->
-    <section class="p-0 border-bottom border-color-extra-medium-gray">
+    <section class="p-0 border-bottom border-color-extra-medium-gray" id="contacto">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-xl-3 col-lg-4 md-mt-30px text-center text-lg-start">
@@ -1347,14 +1712,7 @@
               Estamos para ayudar.
             </h2>
             <div class="row row-cols-1 row-cols-sm-2 mb-30px xs-mb-25px">
-              <div class="col last-paragraph-no-margin xs-mb-25px">
-                <span class="fs-18 fw-600 text-dark-gray">Ubicación</span>
-                <div
-                  class="h-1px w-80 sm-w-100 bg-dark-gray mt-10px mb-10px"
-                ></div>
-                <p class="w-75 lg-w-90">Av. Cordillera de los Andes 120, Piso 5. CP 11000, Lomas de Chapultepec</p>
-              </div>
-              <div class="col">
+              <div class="col-md-6">
                 <span class="fs-18 fw-600 text-dark-gray">Email</span>
                 <div
                   class="h-1px w-80 sm-w-100 bg-dark-gray mt-10px mb-10px"
@@ -1363,9 +1721,7 @@
                   <a href="mailto:luacup21@gmail.com">luacup21@gmail.com</a>
                 </div>
               </div>
-            </div>
-            <div class="row row-cols-1 row-cols-sm-2">
-              <div class="col last-paragraph-no-margin xs-mb-25px">
+              <div class="col-md-6">
                 <span class="fs-18 fw-600 text-dark-gray">Teléfono</span>
                 <div
                   class="h-1px w-80 sm-w-100 bg-dark-gray mt-10px mb-10px"
@@ -1378,25 +1734,49 @@
                     ></span
                   >
                 </div>
+                
               </div>
-              <div class="col">
-                <span class="fs-18 fw-600 text-dark-gray"
-                  >Horarios de Atención</span
-                >
-                <div
-                  class="h-1px w-80 sm-w-100 bg-dark-gray mt-10px mb-10px"
-                ></div>
-                <div class="w-100 d-block">
-                  <span class="d-block"
-                    ><span class="fw-600 text-dark-gray">Lunes - Viernes:</span>
-                    09 am a 08 pm</span
-                  >
-                  <span class="d-block"
-                    ><span class="fw-600 text-dark-gray">Sabado - Domingo:</span>
-                    Cerrado
-                  </span>
-                </div>
+              <div
+              class="col-md-6 last-paragraph-no-margin text-center text-sm-start mt-5"
+            >
+            <span class="fs-18 fw-600 text-dark-gray">Redes Sociales</span>
+            <div
+              class="h-1px w-80 sm-w-100 bg-dark-gray mt-10px mb-10px"
+            ></div>
+              <div class="elements-social social-icon-style-09">
+                <ul class="medium-icon">
+                  <li>
+                    <a
+                      class="facebook"
+                      href="https://www.facebook.com/"
+                      target="_blank"
+                      ><i class="fa-brands fa-facebook-f"></i><span></span
+                    ></a>
+                  </li>
+                  <li>
+                    <a
+                      class="instagram"
+                      href="http://www.instagram.com"
+                      target="_blank"
+                      ><i class="fa-brands fa-instagram"></i><span></span
+                    ></a>
+                  </li>
+                  <li>
+                    <a
+                      class="twitter"
+                      href="http://www.youtube.com"
+                      target="_blank"
+                      ><i class="fa-brands fa-youtube"></i><span></span
+                    ></a>
+                  </li>
+                </ul>
               </div>
+            </div>
+            
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2">
+              
+              
             </div>
           </div>
           <div
@@ -1544,35 +1924,37 @@
               >
                 <ul class="footer-navbar fs-16">
                   <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link">Home</a>
+                    <a href="index.html" class="nav-link">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link"
+                    <a href="#acerca-de" class="nav-link"
                       >Acerca De</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link"
+                    <a href="#beneficios" class="nav-link"
                       >Beneficios</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link"
+                    <a href="/html/luacup.html" class="nav-link"
                       >Adquirí tu Lúa Cup</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link"
-                      >Instructivo</a
-                    >
+                    <a
+                    href="../lua-cup-instructivo.pdf"
+                    download="lua-cup-instructivo.pdf"
+                    class="nav-link"
+                    >Instructivo</a>
                   </li>
                   <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link"
+                    <a href="#faqs" class="nav-link"
                       >FAQs</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link"
+                    <a href="#contacto" class="nav-link"
                       >Contacto</a
                     >
                   </li>
