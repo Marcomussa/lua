@@ -51,7 +51,6 @@ function renderCartItems() {
             deleteButton.addEventListener('click', function() {
                 Swal.fire({
                     title: "Estas segur@?",
-                    text: "Lorem ipsum lorem ipsum",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#d33",

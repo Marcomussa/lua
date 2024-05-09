@@ -19423,6 +19423,14 @@ select {
   width: 100% !important;
 }
 
+.cart-nav-responsive {
+  display: none;
+}
+
+.wpp-nav-responsive {
+  display: none;
+}
+
 @media only screen and (max-width: 450px){
   body > div.page-layout > section.p-0.mt-1 > div > div {
     align-items: center;
@@ -19465,5 +19473,32 @@ select {
   .btn-add-talla-l {
     width: 100%;
     font-size: 1.5rem;
+  }
+  #stored-items > div > button:nth-child(2), #stored-items > div > button:nth-child(3) {
+    display: none;
+  }
+  #stored-items > div > button.btn.btn-danger {
+    font-size: 14px;
+  }
+  .cart-nav-responsive {
+    display: inline-block;
+  }
+  .wpp-nav-responsive {
+    display: inline-block;
+  }
+  .cart-nav-responsive i,  .wpp-nav-responsive i{
+    color: white;
+    margin-left: 10px !important;
+    font-size: 22px;
+  }
+  body > div.page-layout > section.position-relative.z-index-1.pb-0.contact-section.mt-5 > div > div > div.col-lg-6.pb-7.sm-pb-40px {
+    text-align: center;
+    margin-top: 50px;
+  }
+  body > div.page-layout > section.position-relative.z-index-1.pb-0.contact-section.mt-5 > div > div > div.col-lg-6.pb-7.sm-pb-40px > div.row.row-cols-1.row-cols-sm-2.mb-30px.xs-mb-25px > div.col-md-6.last-paragraph-no-margin.text-center.text-sm-start.mt-5 > div.elements-social.social-icon-style-09 > ul {
+    margin-top: 5px;
+  }
+  body > div.page-layout > footer > div.pt-20px.pb-20px.border-top.border-color-transparent-white-light > div > div > div.col-xxl-4.col-lg-5.fs-16.last-paragraph-no-margin.text-white.text-center.text-lg-start > p {
+    margin-top: 20px;
   }
 }
