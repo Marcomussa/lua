@@ -19424,11 +19424,11 @@ select {
 }
 
 .cart-nav-responsive {
-  display: none;
+  display: none !important;
 }
 
 .wpp-nav-responsive {
-  display: none;
+  display: none !important;
 }
 
 @media only screen and (max-width: 450px){
@@ -19481,10 +19481,10 @@ select {
     font-size: 14px;
   }
   .cart-nav-responsive {
-    display: inline-block;
+    display: inline-block !important;
   }
   .wpp-nav-responsive {
-    display: inline-block;
+    display: inline-block !important;
   }
   .cart-nav-responsive i,  .wpp-nav-responsive i{
     color: white;
