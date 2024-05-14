@@ -65,6 +65,9 @@ header .navbar-brand {
 .bg-gradient-solitude-blue-fair-pink {
     background-image: linear-gradient(to bottom, #f8ebe9, #f6ebed, #f2ebf0, #eeebf1, #eaecf1);
 }
+.bg-gradient-solitude-fair-pink-blue {
+    background-image: linear-gradient(to bottom, #eaecf1, #eeebf1, #f2ebf0, #f6ebed, #f8ebe9);
+}
 .bg-gradient-dark-transparent {
     background: -webkit-gradient(linear, left bottom, left top, color-stop(7%, #2E3844), to(transparent));
     background: linear-gradient(to top, #2E3844 7%, transparent 100%);

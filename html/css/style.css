@@ -45,12 +45,12 @@ Table of contents
 /* ===================================
     02. CSS color variable
 ====================================== */
+
 :root {
   --main: #eee6d4;
   --blue: #004196;
-  --pink: #e1b6d3,
-  --orange: #f58e40,
-
+  --orange: #f58e40;
+  --pink: #e1b6d3;
   --base-color: #2946f3;
   --white: #ffffff;
   --black: #000000;
@@ -93,6 +93,34 @@ Table of contents
 /* ===================================
     03. Reset
 ====================================== */
+.bg-main-darker-lua {
+  background-color: #b3ac9b;
+}
+.bg-main-lua {
+  background-color: var(--main);
+}
+.bg-blue-lua {
+  background-color: var(--blue);
+}
+.bg-pink-lua {
+  background-color: var(--pink);
+}
+.bg-orange-lua {
+  background-color: var(--orange);
+}
+.text-main-lua {
+  color: var(--main);
+}
+.text-blue-lua {
+  color: var(--blue);
+}
+.text-pink-lua {
+  color: var(--pink);
+}
+.text-orange-lua {
+  color: var(--orange);
+}
+
 .alt-font {
   font-family: var(--alt-font);
 }
@@ -19431,6 +19459,16 @@ select {
   display: none !important;
 }
 
+body > div.page-layout > section.pb-0.top-space-padding.bg-main-lua.full-screen.border-top.position-relative.md-h-700px.sm-h-600px.sm-pb-70px > div.container.h-100 > div > div > a:hover, #faqs > div > div > div.col-xl-5.col-lg-6.offset-xl-1.pt-8.pb-10.align-self-end.order-1.order-lg-2.appear.anime-child.anime-complete > a:hover {
+  background: var(--blue) !important
+}
+
+@media only screen and (min-width: 450px){ 
+  body > div.page-layout > section:nth-child(2) {
+    padding-top: 50px !important;
+  }
+}
+
 @media only screen and (max-width: 450px){
   body > div.page-layout > section.p-0.mt-1 > div > div {
     align-items: center;
@@ -19502,3 +19540,4 @@ select {
     margin-top: 20px;
   }
 }
+
