@@ -93,6 +93,16 @@ Table of contents
 /* ===================================
     03. Reset
 ====================================== */
+
+.nav-item a{
+  font-weight: 600 !important;
+}
+.bg-light-blue-lua {
+  background-color: #bbbecb
+}
+.bg-darker-light-blue-lua {
+  background-color: #8d94aa
+}
 .bg-main-darker-lua {
   background-color: #b3ac9b;
 }
@@ -19539,5 +19549,10 @@ body > div.page-layout > section.pb-0.top-space-padding.bg-main-lua.full-screen.
   body > div.page-layout > footer > div.pt-20px.pb-20px.border-top.border-color-transparent-white-light > div > div > div.col-xxl-4.col-lg-5.fs-16.last-paragraph-no-margin.text-white.text-center.text-lg-start > p {
     margin-top: 20px;
   }
+  body > div.page-layout > section.bg-gradient-solitude-blue-fair-pink > div > div:nth-child(2) > div.row.align-items-center.mb-5 > div.col-lg-6.icon-with-text-style-01.d-flex.justify-content-lg-center.justify-content-start.border-end.md-border-end-0.md-border-bottom.border-color-extra-medium-gray.md-pb-40px.xs-pb-25px > div > div.feature-box-icon.me-25px.lg-me-20px > img, body > div.page-layout > section.bg-gradient-solitude-blue-fair-pink > div > div:nth-child(2) > div.row.align-items-center.mb-5 > div.col-lg-6.d-flex.justify-content-lg-center.justify-content-start.icon-with-text-style-01.md-pt-40px.xs-pt-25px > div > div.feature-box-icon.me-25px.lg-me-20px > img {
+    height: 35px !important;
+  }
+  body > div.page-layout > section.overflow-hidden.position-relative.pb-0.pt-0 > div.position-absolute.left-0px.bottom-0px > img {
+    display: none !important;
+  }
 }
-
