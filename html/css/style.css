@@ -19556,3 +19556,11 @@ body > div.page-layout > section.pb-0.top-space-padding.bg-main-lua.full-screen.
     display: none !important;
   }
 }
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+  
+}
