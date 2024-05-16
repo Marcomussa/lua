@@ -19557,10 +19557,18 @@ body > div.page-layout > section.pb-0.top-space-padding.bg-main-lua.full-screen.
   }
 }
 
+#navbar {
+  transition: top 0.3s; /* Transición suave de 0.3 segundos para el top */
+}
+
 .sticky {
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 5;
   
+}
+.hide {
+  transition: top 0.3s; /* Transición suave de 0.3 segundos para el top */
+
 }
