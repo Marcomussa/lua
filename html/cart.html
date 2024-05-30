@@ -188,21 +188,19 @@
                     </div> 
                     <div class="col-lg-6 align-self-end contact-form-style-03 sm-mb-50px"> 
                         <div class="bg-dark-gray box-shadow-double-large p-13 lg-p-10 border-radius-10px position-relative overflow-hidden">
-                            <h2 class="alt-font text-white xs-mb-15px fancy-text-style-4 ls-minus-1px">Sus Datos  
-                                
-                            </h2>
-                            <form action="email-templates/contact-form.php" method="post">
+                            <h2 class="alt-font text-white xs-mb-15px fancy-text-style-4 ls-minus-1px">Sus Datos</h2>
+                            <form id="order-form">
                                 <div class="position-relative form-group mb-20px">
                                     <span class="form-icon"><i class="bi bi-person icon-extra-medium"></i></span>
-                                    <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="name" placeholder="Nombre y Apellido*">
+                                    <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="name" placeholder="Nombre y Apellido*" id="name-order">
                                 </div>
                                 <div class="position-relative form-group mb-20px">
                                   <span class="form-icon"><i class="bi bi-phone icon-extra-medium"></i></span>
-                                  <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="phone" placeholder="Telefono*">
+                                  <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="phone" placeholder="Telefono*" id="phone-order">
                                 </div>
                                 <div class="position-relative form-group mb-20px">
                                     <span class="form-icon"><i class="bi bi-envelope icon-extra-medium"></i></span>
-                                    <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="email" name="email" placeholder="Email*">
+                                    <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="email" name="email" placeholder="Email*" id="email-order">
                                 </div>
                                 
                                 <div class="position-relative form-group mb-20px">
@@ -213,29 +211,74 @@
                                 <div class="mb-20px" style="display: flex; justify-content: space-between;">
                                   <div class="position-relative form-group" style="width: 60%;">
                                       <span class="form-icon"><i class="bi bi-geo-alt-fill icon-extra-medium"></i></span>
-                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light      placeholder-medium-gray form-control required" type="text" name="address" placeholder="Direccion*">
+                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light      placeholder-medium-gray form-control required" type="text" name="address" placeholder="Direccion*" id="address-order">
                                     </div>
                                     <div class="position-relative form-group" style="width: 35%">
                                       <span class="form-icon"><i class="bi bi-building icon-extra-medium"></i></span>
-                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control" type="text" name="floor" placeholder="Piso">
+                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control" type="text" name="floor" placeholder="Piso" id="floor-order">
                                     </div>
                                 </div>
 
-                                <div class="mb-20px" style="display: flex; justify-content: space-between;">
+                                <div class="" style="display: flex; justify-content: space-between;">
                                   <div class="position-relative form-group mb-20px" style="width: 60%;">
                                       <span class="form-icon"><i class="bi bi-geo-alt icon-extra-medium"></i></span>
-                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light  placeholder-medium-gray form-control required" type="text" name="city" placeholder="Ciudad*">
+                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light  placeholder-medium-gray form-control required" type="text" name="city" placeholder="Ciudad*" id="city-order">
                                     </div>
                                     <div class="position-relative form-group mb-20px" style="width: 35%">
                                       <span class="form-icon"><i class="bi bi-radar icon-extra-medium"></i></span>
-                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="cp" name="cp" placeholder="CP*">
+                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="cp" name="cp" placeholder="CP*" id="zip-order">
                                     </div>
+                                </div>
+
+                                <div class="position-relative form-group mb-20px">
+                                  <select id="state-order" class="required border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control" style="padding: 10px 0px;
+                                  width: 100% !important;">
+                                    <option value="Seleccionar Estado" disabled selected>Estado*</option>
+                                    <option value="Aguascalientes">Aguascalientes</option>
+                                    <option value="Baja California">Baja California</option>
+                                    <option value="Baja California Sur">Baja California Sur</option>
+                                    <option value="Campeche">Campeche</option>
+                                    <option value="Chiapas">Chiapas</option>
+                                    <option value="Chihuahua">Chihuahua</option>
+                                    <option value="Ciudad de México">Ciudad de México</option>
+                                    <option value="Coahuila">Coahuila</option>
+                                    <option value="Colima">Colima</option>
+                                    <option value="Durango">Durango</option>
+                                    <option value="Estado de México">Estado de México</option>
+                                    <option value="Guanajuato">Guanajuato</option>
+                                    <option value="Guerrero">Guerrero</option>
+                                    <option value="Hidalgo">Hidalgo</option>
+                                    <option value="Jalisco">Jalisco</option>
+                                    <option value="Michoacán">Michoacán</option>
+                                    <option value="Morelos">Morelos</option>
+                                    <option value="Nayarit">Nayarit</option>
+                                    <option value="Nuevo León">Nuevo León</option>
+                                    <option value="Oaxaca">Oaxaca</option>
+                                    <option value="Puebla">Puebla</option>
+                                    <option value="Querétaro">Querétaro</option>
+                                    <option value="Quintana Roo">Quintana Roo</option>
+                                    <option value="San Luis Potosí">San Luis Potosí</option>
+                                    <option value="Sinaloa">Sinaloa</option>
+                                    <option value="Sonora">Sonora</option>
+                                    <option value="Tabasco">Tabasco</option>
+                                    <option value="Tamaulipas">Tamaulipas</option>
+                                    <option value="Tlaxcala">Tlaxcala</option>
+                                    <option value="Veracruz">Veracruz</option>
+                                    <option value="Yucatán">Yucatán</option>
+                                    <option value="Zacatecas">Zacatecas</option>
+                                </select>
+                                  
+                                </div>
+
+                                <div class="position-relative form-group mb-20px">
+                                  
+                                  <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control"  type="text" name="message" placeholder="Detalles Acerca de su Direccion" id="details-order">
                                 </div>
 
                                 <div class="position-relative form-group form-textarea mt-15px mb-12"> 
                                     
                                     <input type="hidden" name="redirect" value="">
-                                    <button class="btn btn-medium btn-white btn-box-shadow mt-30px fw-700 submit btn-round-edge" type="submit">Realizar Pedido</button>
+                                    <button class="btn btn-medium btn-white btn-box-shadow mt-30px fw-700 btn-round-edge" type="submit">Realizar Pedido</button>
                                     <div class="form-results mt-20px d-none"></div>
                                 </div>
                             </form>
@@ -403,6 +446,50 @@ window.onscroll = function() {
     }
     prevScrollpos = currentScrollPos;
 }
+
+const estados = [
+            "Aguascalientes",
+            "Baja California",
+            "Baja California Sur",
+            "Campeche",
+            "Chiapas",
+            "Chihuahua",
+            "Ciudad de México",
+            "Coahuila",
+            "Colima",
+            "Durango",
+            "Estado de México",
+            "Guanajuato",
+            "Guerrero",
+            "Hidalgo",
+            "Jalisco",
+            "Michoacán",
+            "Morelos",
+            "Nayarit",
+            "Nuevo León",
+            "Oaxaca",
+            "Puebla",
+            "Querétaro",
+            "Quintana Roo",
+            "San Luis Potosí",
+            "Sinaloa",
+            "Sonora",
+            "Tabasco",
+            "Tamaulipas",
+            "Tlaxcala",
+            "Veracruz",
+            "Yucatán",
+            "Zacatecas"
+        ];
+
+        const selectElement = document.getElementById('state-order');
+
+        estados.forEach(estado => {
+            const option = document.createElement('option');
+            option.value = estado;
+            option.textContent = estado;
+            selectElement.appendChild(option);
+        });
     </script>
 </html>
 
