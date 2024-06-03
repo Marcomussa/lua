@@ -2,12 +2,13 @@ const express = require("express")
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
+const axios = require('axios');
           
 // SDK de Mercado Pago
 const { MercadoPagoConfig, Preference } = require('mercadopago')
 // Agrega credenciales
 const client = new MercadoPagoConfig({ 
-    accessToken: '' 
+    accessToken: 'APP_USR-207196557607626-053115-54570b6c2b2b4c6ed6e97847785c3490-1409367344' 
 });
 
 app.use(cors())
@@ -39,6 +40,20 @@ app.post('/create-preference', async (req, res) => {
         return error
     }
 })
+
+app.post('/quotation', async (req, res) => {
+    try {
+        const response = await axios.post('https://apiqa.myeship.co/rest/quotation', req.body, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer `
+            }
+        });
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
 
 app.listen(3000, () => {
     console.log("Server on Port 3000")
