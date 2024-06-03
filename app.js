@@ -8,7 +8,7 @@ const axios = require('axios');
 const { MercadoPagoConfig, Preference } = require('mercadopago')
 // Agrega credenciales
 const client = new MercadoPagoConfig({ 
-    accessToken: 'APP_USR-207196557607626-053115-54570b6c2b2b4c6ed6e97847785c3490-1409367344' 
+    accessToken: '' 
 });
 
 app.use(cors())
