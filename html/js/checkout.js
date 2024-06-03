@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotal();
 });
 
+let btnSubmit = document.querySelector('#submit-form')
 let form = document.querySelector("#order-form")
 let customer = document.querySelector("#name-order")
 let phone = document.querySelector("#phone-order")
@@ -14,10 +15,55 @@ let city = document.querySelector("#city-order")
 let zip = document.querySelector("#zip-order")
 let addressDetails = document.querySelector("#details-order")
 
+const mp = new MercadoPago('')  
+
+async function createOrder(){
+    const cart = localStorage.getItem('cartItems');
+    const products = JSON.parse(cart);
+    const totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0);
+
+    const order = {
+        items: [
+            {
+                title: products[0].description, 
+                quantity: totalQuantity,
+                unit_price: 450,
+                currency_id: 'MXN'
+            }
+        ]
+    };
+    console.log(order)
+    const response = await fetch('http://localhost:3000/create-preference', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order)
+    })
+
+    const preference = await response.json()
+    createCheckoutButton(preference.id)
+}
+
+const createCheckoutButton = (preferenceId) => {
+    const bricksBuilder = mp.bricks();
+
+    const renderComponent = async () => {
+        if(window.checkoutButton) window.checkoutButton.unmount()
+        await bricksBuilder.create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: preferenceId
+            }
+        })
+    }
+
+    renderComponent()
+}
+
 function tests(){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
-        getOrderData()
+        createOrder()
     })
 }
 tests()
@@ -112,7 +158,6 @@ function getOrderData() {
         items: itemsArray,
     }
 
-    console.log(JSON.stringify(orderData))
     return orderData
 }
 
@@ -193,4 +238,5 @@ function updateTotal() {
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     document.getElementById('totalPrice').textContent = `Total: $${total.toFixed(2)}`;
+    return total
 }

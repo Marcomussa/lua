@@ -278,7 +278,8 @@
                                 <div class="position-relative form-group form-textarea mt-15px mb-12"> 
                                     
                                     <input type="hidden" name="redirect" value="">
-                                    <button class="btn btn-medium btn-white btn-box-shadow mt-30px fw-700 btn-round-edge" type="submit">Realizar Pedido</button>
+                                    <div id="wallet_container"></div>
+                                    <button class="btn btn-medium btn-white btn-box-shadow mt-30px fw-700 btn-round-edge" type="submit" id="submit-form">Realizar Pedido</button>
                                     <div class="form-results mt-20px d-none"></div>
                                 </div>
                             </form>
@@ -418,6 +419,7 @@
         </div>
         <!-- end scroll progress -->
         <!-- javascript libraries -->
+        <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/vendors.min.js"></script>
 
@@ -446,50 +448,6 @@ window.onscroll = function() {
     }
     prevScrollpos = currentScrollPos;
 }
-
-const estados = [
-            "Aguascalientes",
-            "Baja California",
-            "Baja California Sur",
-            "Campeche",
-            "Chiapas",
-            "Chihuahua",
-            "Ciudad de México",
-            "Coahuila",
-            "Colima",
-            "Durango",
-            "Estado de México",
-            "Guanajuato",
-            "Guerrero",
-            "Hidalgo",
-            "Jalisco",
-            "Michoacán",
-            "Morelos",
-            "Nayarit",
-            "Nuevo León",
-            "Oaxaca",
-            "Puebla",
-            "Querétaro",
-            "Quintana Roo",
-            "San Luis Potosí",
-            "Sinaloa",
-            "Sonora",
-            "Tabasco",
-            "Tamaulipas",
-            "Tlaxcala",
-            "Veracruz",
-            "Yucatán",
-            "Zacatecas"
-        ];
-
-        const selectElement = document.getElementById('state-order');
-
-        estados.forEach(estado => {
-            const option = document.createElement('option');
-            option.value = estado;
-            option.textContent = estado;
-            selectElement.appendChild(option);
-        });
     </script>
 </html>
 
