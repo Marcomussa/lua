@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotal()
 })
 
+const mp = new MercadoPago('')  
 let btnSubmit = document.querySelector('#submit-form')
 let form = document.querySelector("#order-form")
 let customer = document.querySelector("#name-order")
@@ -15,9 +16,86 @@ let city = document.querySelector("#city-order")
 let zip = document.querySelector("#zip-order")
 let addressDetails = document.querySelector("#details-order")
 
-const mp = new MercadoPago('APP_USR-534177af-5707-41cc-852e-a44929cf1b34')  
-
-async function createOrder(){
+let quotationTest = 
+    {
+        "address_from":{
+            "name":"Not2 Fitness",
+            "company":"Not2 Fitness",
+            "street1":"2065 Progress St., Ste A",
+            "street2":"",
+            "city":"Vista",
+            "state":"CA",
+            "zip":"92081",
+            "country":"US",
+            "phone":"6559225181",
+            "email":"shipping@not2fit.com"
+        },
+        "address_to":{
+            "name":"Jennifer Smith",
+            "company":"Jennifer Smith",
+            "street1":"125 Bartley Drive",
+            "street2":"",
+            "city":"Newark",
+            "state":"DE",
+            "zip":"19702",
+            "country":"US",
+            "phone":"3053326755",
+            "email":"jsmith@example.com"
+        },
+        "parcels":[
+            {
+                "length":30,
+                "height":20,
+                "width":10,
+                "distance_unit":"cm",
+                "weight":1,
+                "mass_unit":"kg",
+                "reference":"Reference 1"
+            }
+        ],
+        "order_info":{
+            "order_num":"BA12041",
+            "shipment_type":"Next Day",
+            "status":0,
+            "paid":1
+        }
+} 
+let quotationProd = {
+    "address_from": {
+        "name": 'Sandra Kalach',
+        'company': 'Lua Cup',
+        'street1': 'Calzada de la naranja 1G',
+        'city': 'Naucalpan de Juarez', 
+        'state': 'Ciudad de Mexico',
+        'zip': '53370',
+        'phone': '+525591350245',
+        'email': 'contacto@segmail.co',
+        'country': 'MX'
+    },
+    "address_to": {
+        "name": customer.value,
+        "company": addressDetails.value,
+        "street1": street.value,
+        "city": city.value,
+        "state": state.value,
+        "zip": zip.value,
+        "phone": phone.value,
+        "email": email.value,
+        "country": "MX"
+    },
+    "parcels":[
+        {
+            "length":30,
+            "height":20,
+            "width":10,
+            "distance_unit": "cm",
+            "weight": 1, 
+            "mass_unit":"kg",
+            "reference": null
+        }
+    ]
+}      
+async function createOrder(shipmentPrice){
     const cart = localStorage.getItem('cartItems')
     const products = JSON.parse(cart)
     const totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0)
@@ -57,117 +135,6 @@ const createCheckoutButton = (preferenceId) => {
     }
 
     renderComponent()
-}
-
-function tests(){
-    form.addEventListener("submit", (e) => {
-        e.preventDefault()
-        quotation()
-    })
-}
-tests()
-
-async function quotation() {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || []
-    const itemsArray = generateItemsArray(cartItems)
-    let quotation = {
-        "address_from": {
-            "name": 'Sandra Kalach',
-            'company': 'Lua Cup',
-            'street1': 'Calzada de la naranja 1G',
-            'city': 'Naucalpan de Juarez', 
-            'state': 'Ciudad de Mexico',
-            'zip': '53370',
-            'phone': '+525591350245',
-            'email': 'contacto@segmail.co',
-            'country': 'MX'
-        },
-        "address_to": {
-            "name": customer.value,
-            "company": addressDetails.value,
-            "street1": street.value,
-            "city": city.value,
-            "state": state.value,
-            "zip": zip.value,
-            "phone": phone.value,
-            "email": email.value,
-            "country": "MX"
-        },
-        "parcels":[
-            {
-                "length":30,
-                "height":20,
-                "width":10,
-                "distance_unit": "cm",
-                "weight": 1, 
-                "mass_unit":"kg",
-                "reference": null
-            }
-        ]
-    }
-
-    let quotationTest = {
-        "address_from": {
-            "name":"Juan de la Barrera",
-            "company": "Colegio Militar",
-            "email":"jbarrera@myeship.co",
-            "phone":"55 9135 0245",
-            "street1":"Paseo de los Tamarindos 90",
-            "street2":"Bosques de las Lomas",
-            "city":"Cuajimalpa",
-            "state": "CDMX",
-            "country": "MX",
-            "zip": "05120"
-        },
-        "address_to": {
-            "name":"Juan Escutia",
-            "company": "Colegio Militar",
-            "email":"jescutia@myeship.co",
-            "phone":"55 9135 0245",
-            "street1":"Jesús del Monte 42",
-            "street2":"Hacienda de las Palmas",
-            "city":"Huixquilucan",
-            "state":"MEX",
-            "country":"MX",
-            "zip":"52763"
-        },
-        "parcels":[
-            {
-                "length":30,
-                "height":20,
-                "width":10,
-                "distance_unit":"cm",
-                "weight":1,
-                "mass_unit":"kg",
-                "reference":"Reference 1"
-            }
-        ],
-        "order_info":{
-            "order_num":"BA12041",
-            "shipment_type":"Next Day",
-            "status":0,
-            "paid":1
-        }
-    }           
-
-    const url = 'http://localhost:3000/quotation' 
-    console.log(quotation)
- 
-        const response = await fetch(url, {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(quotationTest)
-        })
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText)
-        }
-
-        const data = await response.json()
-        console.log(data)
-
 }
 
 function generateItemsArray(cartItems) {
@@ -284,6 +251,6 @@ function renderCartItems() {
 function updateTotal() {
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || []
     const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
-    document.getElementById('totalPrice').textContent = `Total: $${total.toFixed(2)}`
+    document.getElementById('totalPrice').textContent = `Subtotal: $${total.toFixed(2)}`
     return total
 }

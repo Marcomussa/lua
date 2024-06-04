@@ -185,11 +185,30 @@
                         <h2 class="alt-font fw-400 text-dark-gray ls-minus-1px w-80 lg-w-100 mb-40px sm-mb-30px">Tus Productos</h2>
                         <div id="stored-items"></div>
                         <div id="totalPrice"></div>
+                        <hr>
+                        <% if (result && result.rates && result.rates.length > 0) { %>
+                          <% result.rates.forEach(rate => { %>
+                            <button style="background: none;
+                            width: 100%;
+                            border: none;
+                            text-align: left;"
+                            onclick="createOrder(100)">
+                              <div class="quotation col-md-12" style="margin: 20px 0px; display: inline-block; padding: 20px; background-color: rgba(0, 0, 0, 0.05);">
+                                <p class="mb-5px">Proveedor: <%= rate.provider %></p>
+                                <p class="mb-5px">Días: <%= rate.days %></p>
+                                <p class="mb-5px">Monto de Envio: <%= rate.amount %> <%= rate.currency %></p>                                
+                              </div>
+                            </button>
+                          <% }) %>
+                        <% } else { %>
+                            <p></p>
+                        <% } %>
                     </div> 
                     <div class="col-lg-6 align-self-end contact-form-style-03 sm-mb-50px"> 
                         <div class="bg-dark-gray box-shadow-double-large p-13 lg-p-10 border-radius-10px position-relative overflow-hidden">
                             <h2 class="alt-font text-white xs-mb-15px fancy-text-style-4 ls-minus-1px">Sus Datos</h2>
-                            <form id="order-form">
+
+                            <form id="order-form" method="POST" action="/quotation">
                                 <div class="position-relative form-group mb-20px">
                                     <span class="form-icon"><i class="bi bi-person icon-extra-medium"></i></span>
                                     <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="name" placeholder="Nombre y Apellido*" id="name-order">
@@ -279,16 +298,20 @@
                                     
                                     <input type="hidden" name="redirect" value="">
                                     <div id="wallet_container"></div>
-                                    <button class="btn btn-medium btn-white btn-box-shadow mt-30px fw-700 btn-round-edge" type="submit" id="submit-form">Realizar Pedido</button>
+                                    <button class="btn btn-medium btn-white btn-box-shadow mt-30px fw-700 btn-round-edge" type="submit" id="submit-form">Cotizar Envio</button>
                                     <div class="form-results mt-20px d-none"></div>
                                 </div>
                             </form>
+                            
+                            <form action="" id="create-order-form"></form>
                            
                         </div>
                     </div> 
                 </div> 
             </div>
         </section>
+
+
         <!-- end section --> 
    
         <!-- start footer -->
