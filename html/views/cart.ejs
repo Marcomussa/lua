@@ -192,8 +192,12 @@
                             width: 100%;
                             border: none;
                             text-align: left;"
-                            onclick="createOrder(100)">
-                              <div class="quotation col-md-12" style="margin: 20px 0px; display: inline-block; padding: 20px; background-color: rgba(0, 0, 0, 0.05);">
+                            onclick="createOrder('<%= rate.amount %>')">
+                              <div class="quotation col-md-12" style="
+                                margin: 20px 0px; 
+                                display: inline-block; 
+                                padding: 20px; 
+                                background-color: rgba(0, 0, 0, 0.05);">
                                 <p class="mb-5px">Proveedor: <%= rate.provider %></p>
                                 <p class="mb-5px">Días: <%= rate.days %></p>
                                 <p class="mb-5px">Monto de Envio: <%= rate.amount %> <%= rate.currency %></p>                                
@@ -451,6 +455,14 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     </body>
+    <style>
+      .quotation {
+        transition: transform 0.45s; 
+      }
+      .quotation:hover {
+        transform: scale(0.975);
+      }
+    </style>
     <script>
             // When the user scrolls the page, execute myFunction
             let prevScrollpos = window.pageYOffset;

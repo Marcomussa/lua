@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotal()
 })
 
-const mp = new MercadoPago('')  
+const mp = new MercadoPago('APP_USR-534177af-5707-41cc-852e-a44929cf1b34', {
+    locale: 'es-MX'
+})  
 let btnSubmit = document.querySelector('#submit-form')
 let form = document.querySelector("#order-form")
 let customer = document.querySelector("#name-order")
@@ -95,22 +97,31 @@ let quotationProd = {
         }
     ]
 }      
+
 async function createOrder(shipmentPrice){
     const cart = localStorage.getItem('cartItems')
     const products = JSON.parse(cart)
+    console.log(products)
+    const sumaQuantity = products.reduce((acumulador, currentValue) => {
+        return acumulador + currentValue.quantity;
+    }, 0);
     const totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0)
 
     const order = {
         items: [
             {
-                title: products[0].description, 
-                quantity: totalQuantity,
+                title: products[0].name, 
+                quantity: 1,
                 unit_price: 450,
                 currency_id: 'MXN'
             }
         ]
     }
+    
+    order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
+     
     console.log(order)
+
     const response = await fetch('http://localhost:3000/create-preference', {
         method: 'POST',
         headers: {
@@ -123,18 +134,23 @@ async function createOrder(shipmentPrice){
     createCheckoutButton(preference.id)
 }
 
+let checkoutButtonCreated = false;
+
 const createCheckoutButton = (preferenceId) => {
+  if (!checkoutButtonCreated) {
     const bricksBuilder = mp.bricks()
 
     const renderComponent = async () => {
-        await bricksBuilder.create("wallet", "wallet_container", {
-            initialization: {
-                preferenceId: preferenceId
-            }
-        })
+      await bricksBuilder.create("wallet", "wallet_container", {
+        initialization: {
+          preferenceId: preferenceId
+        }
+      })
+      checkoutButtonCreated = true; 
     }
 
     renderComponent()
+  }
 }
 
 function generateItemsArray(cartItems) {

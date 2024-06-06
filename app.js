@@ -5,6 +5,9 @@ const morgan = require('morgan')
 const cors = require('cors')
 const axios = require('axios');
 const path = require('path');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
           
 // SDK de Mercado Pago
 const { MercadoPagoConfig, Preference } = require('mercadopago')
@@ -26,7 +29,6 @@ app.get('/', (req, res) => {
 app.get('/luacup', (req, res) => {
     res.render('luacup')
 })
-
 
 app.get('/cart', (req, res) => {
     res.render('cart', {
@@ -52,7 +54,6 @@ app.post('/create-preference', async (req, res) => {
             id: result.id
         })
     } catch (error) {
-        console.log(error)
         return error
     }
 })
@@ -118,6 +119,72 @@ app.post('/quotation', async (req, res) => {
     console.log(response.data)
     return response
 });
+
+app.post('/webhook', async (req, res) => {
+    const payment = req.body;
+
+    if (payment.type === 'payment') {
+        try {
+            const response = await client.payment.get(payment.data.id);
+            if (response.body.status === 'approved') {
+                sendConfirmationEmail(response.body.payer.email);
+            }
+            res.sendStatus(200);
+        } catch (error) {
+            console.log(error);
+            res.sendStatus(500);
+        }
+    } else {
+        res.sendStatus(400);
+    }
+});
+
+// Función para verificar la firma del webhook
+const verifyWebhookSignature = (req, res, buf) => {
+    const secret = process.env.WEBHOOK_SECRET;
+    const hash = crypto.createHmac('sha256', secret)
+                       .update(buf)
+                       .digest('hex');
+    const signature = req.headers['x-hub-signature'];
+
+    if (hash !== signature) {
+        throw new Error('Firma del webhook no válida');
+    }
+};
+
+// Middleware para verificar la firma del webhook
+app.use((req, res, next) => {
+    try {
+        verifyWebhookSignature(req, res, req.rawBody);
+        next();
+    } catch (err) {
+        res.status(401).send('Firma del webhook no válida');
+    }
+});
+
+const sendConfirmationEmail = (email) => {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    let mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Confirmación de Pedido',
+        text: 'Gracias por tu compra. Tu pedido ha sido confirmado.'
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Email enviado: ' + info.response);
+    });
+};
 
 app.listen(3000, () => {
     console.log("Server on Port 3000")
