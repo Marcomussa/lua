@@ -45,7 +45,7 @@
           >
             <div class="container-fluid">
               <div class="col-auto col-xxl-2 col-lg-2 me-lg-0 me-auto">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="/">
                   <img
                     src="images/vv_lua_logo-horizontal-beige.png"
                     data-at2x="images/vv_lua_logo-horizontal-beige.png"
@@ -83,20 +83,20 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                   <ul class="navbar-nav">
                     <li class="nav-item">
-                      <a href="index.html" class="nav-link">Home</a>
+                      <a href="/" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                      <a href="index.html" class="nav-link"
+                      <a href="/" class="nav-link"
                         >Acerca De</a
                       >
                     </li>
                     <li class="nav-item">
-                      <a href="index.html" class="nav-link"
+                      <a href="/" class="nav-link"
                         >Beneficios</a
                       >
                     </li>
                     <li class="nav-item">
-                      <a href="/html/luacup.html" class="nav-link"
+                      <a href="/luacup" class="nav-link"
                         >Adquiere tu Lúa Cup</a
                       >
                     </li>
@@ -108,18 +108,18 @@
                       >Instructivo</a>
                     </li>
                     <li class="nav-item">
-                      <a href="index.html" class="nav-link"
+                      <a href="/" class="nav-link"
                         >FAQs</a
                       >
                     </li>
                     <li class="nav-item">
-                      <a href="index.html" class="nav-link"
+                      <a href="/" class="nav-link"
                         >Contacto</a
                       >
                     </li>
     
                     <li class="nav-item cart-nav-responsive">
-                      <a href="cart.html" class="nav-link"
+                      <a href="/cart" class="nav-link"
                         >Carrito</a
                       ><i
                       class="fa-solid fa-cart-shopping"
@@ -128,7 +128,7 @@
                     </li>
     
                     <li class="nav-item wpp-nav-responsive">
-                      <a href="cart.html" class="nav-link" style="color: #00e676;"
+                      <a href="" class="nav-link" style="color: #00e676;"
                         >WhatsApp</a
                       ><i class="fa-brands fa-whatsapp" style="font-size: 26px; color: #00e676;"></i>
                     </li>
@@ -147,7 +147,7 @@
                   </div>
                   <div class="header-button">
                     <a
-                      href="cart.html"
+                      href="/cart"
                       class="btn btn-transparent-white-light btn-round-edge" style="font-size: 26px;"
                       ><i
                         class="fa-solid fa-cart-shopping"
@@ -215,15 +215,16 @@
                             <form id="order-form" method="POST" action="/quotation">
                                 <div class="position-relative form-group mb-20px">
                                     <span class="form-icon"><i class="bi bi-person icon-extra-medium"></i></span>
-                                    <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="name" placeholder="Nombre y Apellido*" id="name-order">
+                                    <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="name" placeholder="Nombre y Apellido*" id="name-order" value="<%= name || '' %>">
                                 </div>
                                 <div class="position-relative form-group mb-20px">
                                   <span class="form-icon"><i class="bi bi-phone icon-extra-medium"></i></span>
-                                  <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="phone" placeholder="Telefono*" id="phone-order">
+                                  <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="phone" placeholder="Telefono*" id="phone-order" value="<%= phone || '' %>">
                                 </div>
                                 <div class="position-relative form-group mb-20px">
                                     <span class="form-icon"><i class="bi bi-envelope icon-extra-medium"></i></span>
-                                    <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="email" name="email" placeholder="Email*" id="email-order">
+                                    <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="email" name="email" placeholder="Email*" id="email-order"
+                                    value="<%= email || '' %>">
                                 </div>
                                 
                                 <div class="position-relative form-group mb-20px">
@@ -234,27 +235,30 @@
                                 <div class="mb-20px" style="display: flex; justify-content: space-between;">
                                   <div class="position-relative form-group" style="width: 60%;">
                                       <span class="form-icon"><i class="bi bi-geo-alt-fill icon-extra-medium"></i></span>
-                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light      placeholder-medium-gray form-control required" type="text" name="address" placeholder="Direccion*" id="address-order">
+                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light      placeholder-medium-gray form-control required" type="text" name="address" placeholder="Direccion*" id="address-order" value="<%= address || '' %>">
                                     </div>
                                     <div class="position-relative form-group" style="width: 35%">
                                       <span class="form-icon"><i class="bi bi-building icon-extra-medium"></i></span>
-                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control" type="text" name="floor" placeholder="Piso" id="floor-order">
+                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control" type="text" name="floor" placeholder="Piso" id="floor-order" 
+                                      value="<%= floor || '' %>">
                                     </div>
                                 </div>
 
                                 <div class="" style="display: flex; justify-content: space-between;">
                                   <div class="position-relative form-group mb-20px" style="width: 60%;">
                                       <span class="form-icon"><i class="bi bi-geo-alt icon-extra-medium"></i></span>
-                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light  placeholder-medium-gray form-control required" type="text" name="city" placeholder="Ciudad*" id="city-order">
+                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light  placeholder-medium-gray form-control required" type="text" name="city" placeholder="Ciudad*" id="city-order"
+                                      value="<%= city || '' %>">
                                     </div>
                                     <div class="position-relative form-group mb-20px" style="width: 35%">
                                       <span class="form-icon"><i class="bi bi-radar icon-extra-medium"></i></span>
-                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="cp" name="cp" placeholder="CP*" id="zip-order">
+                                      <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="zip" name="zip" placeholder="ZIP*" id="zip-order"
+                                      value="<%= zip || '' %>">
                                     </div>
                                 </div>
 
                                 <div class="position-relative form-group mb-20px">
-                                  <select id="state-order" class="required border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control" style="padding: 10px 0px;
+                                  <select name='state' value="<%= state || '' %>" id="state-order" class="required border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control" style="padding: 10px 0px;
                                   width: 100% !important;">
                                     <option value="Seleccionar Estado" disabled selected>Estado*</option>
                                     <option value="Aguascalientes">Aguascalientes</option>
@@ -295,7 +299,7 @@
 
                                 <div class="position-relative form-group mb-20px">
                                   
-                                  <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control"  type="text" name="message" placeholder="Detalles Acerca de su Direccion" id="details-order">
+                                  <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control"  type="text" name="message" placeholder="Detalles Acerca de su Direccion" id="details-order" value="<%= details || '' %>">
                                 </div>
 
                                 <div class="position-relative form-group form-textarea mt-15px mb-12"> 
@@ -328,7 +332,7 @@
               <div
                 class="col-lg-9 col-md-12 col-sm-6 last-paragraph-no-margin text-center text-sm-start text-md-center text-lg-start md-mb-30px"
               >
-                <a href="index.html" class="footer-logo d-inline-block"
+                <a href="/" class="footer-logo d-inline-block"
                   ><img
                     src="images/vv_lua_logo-horizontal-beige.png"
                     data-at2x="images/vv_lua_logo-horizontal-beige.png"
@@ -389,20 +393,20 @@
                 >
                 <ul class="footer-navbar fs-16">
                   <li class="nav-item">
-                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="/" class="nav-link">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a href="index.html" class="nav-link"
+                    <a href="/" class="nav-link"
                       >Acerca De</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a href="index.html" class="nav-link"
+                    <a href="/" class="nav-link"
                       >Beneficios</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a href="/html/luacup.html" class="nav-link"
+                    <a href="luacup" class="nav-link"
                       >Adquiere tu Lúa Cup</a
                     >
                   </li>
@@ -414,12 +418,12 @@
                     >Instructivo</a>
                   </li>
                   <li class="nav-item">
-                    <a href="index.html" class="nav-link"
+                    <a href="/" class="nav-link"
                       >FAQs</a
                     >
                   </li>
                   <li class="nav-item">
-                    <a href="index.htmls" class="nav-link"
+                    <a href="/s" class="nav-link"
                       >Contacto</a
                     >
                   </li>
@@ -460,7 +464,7 @@
         transition: transform 0.45s; 
       }
       .quotation:hover {
-        transform: scale(0.975);
+        transform: scale(0.95);
       }
     </style>
     <script>

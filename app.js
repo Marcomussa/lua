@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require("express")
 const app = express()
-const morgan = require('morgan')
+const bodyParser = require('body-parser');
 const cors = require('cors')
 const axios = require('axios');
 const path = require('path');
@@ -13,7 +13,7 @@ const crypto = require('crypto');
 const { MercadoPagoConfig, Preference } = require('mercadopago')
 // Agrega credenciales
 const client = new MercadoPagoConfig({ 
-    accessToken: process.env.ACCESS_TOKEN
+    accessToken: process.env.ACCESS_TOKEN_MEX
 });
 
 app.set('view engine', 'ejs');
@@ -21,6 +21,8 @@ app.set('views', path.join(__dirname + '/html/', 'views'));
 app.use(express.static(path.join(__dirname, 'html')));
 app.use(cors())
 app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.render('index')
@@ -32,11 +34,24 @@ app.get('/luacup', (req, res) => {
 
 app.get('/cart', (req, res) => {
     res.render('cart', {
-        result: null
+        result: null,
+        name: '',
+        phone: '',
+        email: '',
+        state: '',
+        address: '',
+        floor: '',
+        city: '',
+        zip: '',
+        details: ''
     })
 })
 
 app.post('/create-preference', async (req, res) => {
+    const { name, phone, email, address, city, zip, floor, state, details } = req.body.metadata[0]
+
+    console.log(req.body)
+
     try {
         const body = {
             items: req.body.items, 
@@ -45,11 +60,31 @@ app.post('/create-preference', async (req, res) => {
                 pending: 'https://google.com',
                 failure: 'https://google.com'
             },
-            auto_return: "approved"
+            auto_return: "approved",
+            //notification_url: 'https://6edc-181-110-147-138.ngrok-free.app/webhook'
+            metadata: {
+                customer_name: name,
+                customer_email: email,
+                customer_floor: floor,
+                customer_address: address,
+                customer_city: city,
+                customer_state: state,
+                customer_zip: zip,
+                customer_details: details
+            },
+            payer: {
+                'name': name,
+                'address': {
+                    'zip_code': zip,
+                    'street_name': `${address, floor, city, state, details}`
+                },
+                'email': email,
+            }
         }
 
         const preference = new Preference(client)
         const result = await preference.create({ body })
+
         res.json({
             id: result.id
         })
@@ -58,7 +93,15 @@ app.post('/create-preference', async (req, res) => {
     }
 })
 
+let orderData = {}
+
 app.post('/quotation', async (req, res) => {
+    const { name, phone, email, state, address, floor, city, zip, details } = req.body;
+
+    const orderId = Date.now().toString();
+
+    orderData[orderId] = { name, phone, email, state, address, floor, city, zip, details };
+
     const quotation = 
     {
         "address_from":{
@@ -110,34 +153,81 @@ app.post('/quotation', async (req, res) => {
         }
     })
 
-    for(let i = 0; i < response.data.rates.length; i++){
-        console.log(response.data.rates[i])
-    }
     res.render('cart', { 
-        result: response.data ? response.data : ''
-    });
-    console.log(response.data)
+        result: response.data ? response.data : '',
+        name: name,
+        phone: phone,
+        email: email,
+        state: state,
+        address: address,
+        floor: floor,
+        city: city,
+        zip: zip,
+        details: details
+    })
+
     return response
 });
 
-app.post('/webhook', async (req, res) => {
-    const payment = req.body;
+// app.post('/webhook', async (req, res) => {
+//     const payment = req.body;
 
-    if (payment.type === 'payment') {
-        try {
-            const response = await client.payment.get(payment.data.id);
-            if (response.body.status === 'approved') {
-                sendConfirmationEmail(response.body.payer.email);
-            }
-            res.sendStatus(200);
-        } catch (error) {
-            console.log(error);
-            res.sendStatus(500);
+//     if (payment.type === 'payment') {
+//         try {
+//             const response = await client.payment.get(payment.data.id);
+//             if (response.body.status === 'approved') {
+//                 sendConfirmationEmail(response.body.payer.email);
+//             }
+//             res.sendStatus(200);
+//         } catch (error) {
+//             console.log(error);
+//             res.sendStatus(500);
+//         }
+//     } else {
+//         res.sendStatus(400);
+//     }
+// });
+
+app.post('/webhook', async (req, res) => {
+    const payment = req.query
+    const paymentId = req.query.id
+    
+    const response = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`
         }
+    })
+
+    if (response.ok) {
+        const paymentData = await response.json();
+        if (paymentData.status === 'approved') {
+            const email = paymentData.payer.email
+            sendConfirmationEmail(email)
+
+            //! POST eSHIP
+            const eshipResponse = await fetch('https://apiqa.myeship.co/rest/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': process.env.API_KEY_ESHIP
+                    },
+                    body: JSON.stringify({
+                        //! Como recibo la data?
+                    })
+            });
+
+            if (eshipResponse.ok) {
+                res.sendStatus(200);
+            } else {
+                res.status(500).send('Error al enviar los datos a Eship');
+            }
+        }
+        res.sendStatus(200);
     } else {
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
-});
+})
 
 // Función para verificar la firma del webhook
 const verifyWebhookSignature = (req, res, buf) => {

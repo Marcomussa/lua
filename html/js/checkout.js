@@ -2,21 +2,10 @@ document.addEventListener('DOMContentLoaded', function() {
     renderCartItems()
     updateTotal()
 })
-
+// APP_USR-534177af-5707-41cc-852e-a44929cf1b34
 const mp = new MercadoPago('APP_USR-534177af-5707-41cc-852e-a44929cf1b34', {
     locale: 'es-MX'
 })  
-let btnSubmit = document.querySelector('#submit-form')
-let form = document.querySelector("#order-form")
-let customer = document.querySelector("#name-order")
-let phone = document.querySelector("#phone-order")
-let email = document.querySelector("#email-order")
-let state = document.querySelector("#state-order")
-let street = document.querySelector("#address-order")
-let floor = document.querySelector("#floor-order")
-let city = document.querySelector("#city-order")
-let zip = document.querySelector("#zip-order")
-let addressDetails = document.querySelector("#details-order")
 
 let quotationTest = 
     {
@@ -62,6 +51,32 @@ let quotationTest =
             "paid":1
         }
 } 
+     
+
+async function createOrder(shipmentPrice){
+    const cart = localStorage.getItem('cartItems')
+    const products = JSON.parse(cart)
+    console.log(products)
+    const sumaQuantity = products.reduce((acumulador, currentValue) => {
+        return acumulador + currentValue.quantity;
+    }, 0);
+    const totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0)
+    const resultString = products.map(product => {
+        return `${product.name}, Cantidad: ${product.quantity}, Size: ${product.size}`;
+    }).join(' | ');
+
+    
+
+let customer = document.querySelector("#name-order").value
+let phone = document.querySelector("#phone-order").value
+let email = document.querySelector("#email-order").value
+let state = document.querySelector("#state-order").value
+let street = document.querySelector("#address-order").value
+let floor = document.querySelector("#floor-order").value
+let city = document.querySelector("#city-order").value
+let zip = document.querySelector("#zip-order").value
+let addressDetails = document.querySelector("#details-order").value
+
 let quotationProd = {
     "address_from": {
         "name": 'Sandra Kalach',
@@ -96,29 +111,33 @@ let quotationProd = {
             "reference": null
         }
     ]
-}      
-
-async function createOrder(shipmentPrice){
-    const cart = localStorage.getItem('cartItems')
-    const products = JSON.parse(cart)
-    console.log(products)
-    const sumaQuantity = products.reduce((acumulador, currentValue) => {
-        return acumulador + currentValue.quantity;
-    }, 0);
-    const totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0)
+} 
 
     const order = {
         items: [
             {
-                title: products[0].name, 
+                title: resultString, 
                 quantity: 1,
-                unit_price: 450,
+                unit_price: 1,
                 currency_id: 'MXN'
+            }
+        ],      
+        metadata: [
+            {
+                name: customer,
+                email,
+                phone,
+                street,
+                floor,
+                city,
+                state,
+                zip,
+                addressDetails
             }
         ]
     }
     
-    order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
+    //order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number//(shipmentPrice)).toFixed(2))
      
     console.log(order)
 
@@ -199,7 +218,7 @@ function renderCartItems() {
 
     if (cartItems.length === 0) {
         const emptyMessage = document.createElement('p')
-        emptyMessage.innerHTML = `Carrito Vacio. <a class="see-products" href="/html/luacup.html">Ver Productos</a>`
+        emptyMessage.innerHTML = `Carrito Vacio. <a class="see-products" href="/luacup">Ver Productos</a>`
         cartItemsContainer.appendChild(emptyMessage)
     } else {
         cartItems.forEach((item, index) => {
