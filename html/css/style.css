@@ -19479,7 +19479,10 @@ body > div.page-layout > section.pb-0.top-space-padding.bg-main-lua.full-screen.
   }
 }
 
-@media only screen and (max-width: 450px){
+@media only screen and (max-width: 500px){
+  .quotation {
+    display: block !important;
+  }
   body > div.page-layout > section.p-0.mt-1 > div > div {
     align-items: center;
   }

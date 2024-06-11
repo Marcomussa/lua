@@ -10,11 +10,11 @@ const crypto = require('crypto');
 
           
 // SDK de Mercado Pago
-const { MercadoPagoConfig, Preference } = require('mercadopago')
+const { MercadoPagoConfig, Preference, Payment } = require('mercadopago')
 // Agrega credenciales
 const client = new MercadoPagoConfig({ 
-    accessToken: process.env.ACCESS_TOKEN_MEX
-});
+    accessToken: process.env.ACCESS_TOKEN_TEST_AR
+})
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname + '/html/', 'views'));
@@ -56,12 +56,12 @@ app.post('/create-preference', async (req, res) => {
         const body = {
             items: req.body.items, 
             back_urls: {
-                success: 'https://google.com',
-                pending: 'https://google.com',
-                failure: 'https://google.com'
+                success: 'https://luacup.com',
+                pending: 'https://luacup.com',
+                failure: 'https://luacup.com'
             },
             auto_return: "approved",
-            //notification_url: 'https://6edc-181-110-147-138.ngrok-free.app/webhook'
+            notification_url: 'https://a38b-181-110-147-138.ngrok-free.app/webhook',
             metadata: {
                 customer_name: name,
                 customer_email: email,
@@ -169,64 +169,107 @@ app.post('/quotation', async (req, res) => {
     return response
 });
 
-// app.post('/webhook', async (req, res) => {
-//     const payment = req.body;
+ app.post('/webhook-test', async (req, res) => {
+    const payment = req.body;
 
-//     if (payment.type === 'payment') {
-//         try {
-//             const response = await client.payment.get(payment.data.id);
-//             if (response.body.status === 'approved') {
-//                 sendConfirmationEmail(response.body.payer.email);
-//             }
-//             res.sendStatus(200);
-//         } catch (error) {
-//             console.log(error);
-//             res.sendStatus(500);
-//         }
-//     } else {
-//         res.sendStatus(400);
-//     }
-// });
+    if (payment.type === 'payment') {
+        try {
+            const response = await client.payment.get(payment.data.id);
+            if (response.body.status === 'approved') {
+                console.log('Webhook Ok')
+                
+                sendConfirmationEmail(response.body.payer.email);
 
-app.post('/webhook', async (req, res) => {
-    const payment = req.query
-    const paymentId = req.query.id
-    
-    const response = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`
-        }
-    })
+                let orderData = {
+                    "address_from":{
+                        "name":"Not2 Fitness",
+                        "company":"Not2 Fitness",
+                        "street1":"2065 Progress St., Ste A",
+                        "street2":"",
+                        "city":"Vista",
+                        "state":"CA",
+                        "zip":"92081",
+                        "country":"US",
+                        "phone":"6559225181",
+                        "email":"shipping@not2fit.com"
+                    },
+                    "address_to":{
+                        "name":"Jennifer Smith",
+                        "company":"Jennifer Smith",
+                        "street1":"125 Bartley Drive",
+                        "street2":"",
+                        "city":"Newark",
+                        "state":"DE",
+                        "zip":"19702",
+                        "country":"US",
+                        "phone":"3053326755",
+                        "email":"jsmith@example.com"
+                    },
+                    "order_info":{
+                        "order_num":"40172",
+                        "paid":1,
+                        "fulfillment":0,
+                        "shipment_type":"Economy",
+                        "total_price":"1300.99",
+                        "total_shipment":"0.00",
+                        "total_tax":"0.00",
+                        "subtotal_price":"1300.99"
+                    },
+                    "items":[
+                        {
+                            "SKU":"BETP1125",
+                            "description":"Hex Elite TPR Dumbbell 125",
+                            "quantity":2,
+                            "price":"227.50",
+                            "weight":"125",
+                            "currency":"USD"
+                        },
+                        {
+                            "SKU":"RIGG1001",
+                            "description":"Power Rack",
+                            "quantity":1,
+                            "price":"845.99",
+                            "weight":"320",
+                            "currency":"USD"
+                        }
+                    ]
+                }             
 
-    if (response.ok) {
-        const paymentData = await response.json();
-        if (paymentData.status === 'approved') {
-            const email = paymentData.payer.email
-            sendConfirmationEmail(email)
-
-            //! POST eSHIP
-            const eshipResponse = await fetch('https://apiqa.myeship.co/rest/order', {
-                    method: 'POST',
+                const response = await axios.post('https://apiqa.myeship.co/rest/order', orderData, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'api-key': process.env.API_KEY_ESHIP
-                    },
-                    body: JSON.stringify({
-                        //! Como recibo la data?
-                    })
-            });
-
-            if (eshipResponse.ok) {
-                res.sendStatus(200);
-            } else {
-                res.status(500).send('Error al enviar los datos a Eship');
+                        'api-key': `${process.env.API_KEY}`
+                    }
+                })
             }
+            res.sendStatus(200);
+        } catch (error) {
+            console.log(error);
+           res.sendStatus(500);
         }
-        res.sendStatus(200);
     } else {
-        res.sendStatus(500);
+        res.sendStatus(400);
     }
+});
+
+app.post('/webhook', async (req, res) => {
+    const payment = new Payment(client)
+    const paymentId = req.query.id
+    console.log(payment)
+
+    payment.get({
+        id: paymentId,
+    })
+    .then((data) => {
+        console.log(data)
+        return data
+    })
+    .catch((err) => {
+        console.log(err)
+        return err
+    })
+
+    sendConfirmationEmail('marcomussa567@gmail.com')
 })
 
 // Función para verificar la firma del webhook
@@ -252,9 +295,11 @@ app.use((req, res, next) => {
     }
 });
 
-const sendConfirmationEmail = (email) => {
+const sendConfirmationEmail = (email, orderData) => {
     let transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
@@ -265,15 +310,16 @@ const sendConfirmationEmail = (email) => {
         from: process.env.EMAIL_USER,
         to: email,
         subject: 'Confirmación de Pedido',
-        text: 'Gracias por tu compra. Tu pedido ha sido confirmado.'
+        text: `Nuevo Pedido Lua Cup
+                ${orderData}`
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Email enviado: ' + info.response);
-    });
+    //transporter.sendMail(mailOptions, (error, info) => {
+        //if (error) {
+            //return console.log(error);
+        //}
+        //console.log('Email enviado: ' + info.response);
+    //});
 };
 
 app.listen(3000, () => {

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotal()
 })
 // APP_USR-534177af-5707-41cc-852e-a44929cf1b34
-const mp = new MercadoPago('APP_USR-534177af-5707-41cc-852e-a44929cf1b34', {
+const mp = new MercadoPago('APP_USR-f04a3dc9-d376-4d22-8e6e-0d0e6b78f02d', {
     locale: 'es-MX'
 })  
 
@@ -58,12 +58,12 @@ async function createOrder(shipmentPrice){
     const products = JSON.parse(cart)
     console.log(products)
     const sumaQuantity = products.reduce((acumulador, currentValue) => {
-        return acumulador + currentValue.quantity;
-    }, 0);
+        return acumulador + currentValue.quantity
+    }, 0)
     const totalQuantity = products.reduce((acc, product) => acc + product.quantity, 0)
     const resultString = products.map(product => {
-        return `${product.name}, Cantidad: ${product.quantity}, Size: ${product.size}`;
-    }).join(' | ');
+        return `${product.name}, Cantidad: ${product.quantity}, Size: ${product.size}`
+    }).join(' | ')
 
     
 
@@ -119,7 +119,7 @@ let quotationProd = {
                 title: resultString, 
                 quantity: 1,
                 unit_price: 1,
-                currency_id: 'MXN'
+                currency_id: 'ARS'
             }
         ],      
         metadata: [
@@ -139,8 +139,6 @@ let quotationProd = {
     
     //order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number//(shipmentPrice)).toFixed(2))
      
-    console.log(order)
-
     const response = await fetch('http://localhost:3000/create-preference', {
         method: 'POST',
         headers: {
