@@ -61,7 +61,7 @@ app.post('/create-preference', async (req, res) => {
                 failure: 'https://luacup.com'
             },
             auto_return: "approved",
-            notification_url: 'https://a38b-181-110-147-138.ngrok-free.app/webhook',
+            notification_url: 'https://8f9e-181-110-147-138.ngrok-free.app/webhook',
             metadata: {
                 customer_name: name,
                 customer_email: email,
@@ -98,35 +98,31 @@ let orderData = {}
 app.post('/quotation', async (req, res) => {
     const { name, phone, email, state, address, floor, city, zip, details } = req.body;
 
-    const orderId = Date.now().toString();
-
-    orderData[orderId] = { name, phone, email, state, address, floor, city, zip, details };
+    console.log(req.body)
 
     const quotation = 
     {
         "address_from":{
-            "name":"Not2 Fitness",
-            "company":"Not2 Fitness",
-            "street1":"2065 Progress St., Ste A",
-            "street2":"",
-            "city":"Vista",
-            "state":"CA",
-            "zip":"92081",
-            "country":"US",
-            "phone":"6559225181",
-            "email":"shipping@not2fit.com"
+            "name": 'Sandra Kalach',
+            'company': 'Lua Cup',
+            'street1': 'Calzada de la naranja 1G',
+            'city': 'Naucalpan de Juarez', 
+            'state': 'Ciudad de Mexico',
+            'zip': '53370',
+            'phone': '+525591350245',
+            'email': 'luacup21@gmail.com',
+            'country': 'MX'
         },
         "address_to":{
-            "name":"Jennifer Smith",
-            "company":"Jennifer Smith",
-            "street1":"125 Bartley Drive",
-            "street2":"",
-            "city":"Newark",
-            "state":"DE",
-            "zip":"19702",
-            "country":"US",
-            "phone":"3053326755",
-            "email":"jsmith@example.com"
+            name,
+            "street1": address,
+            company: details,
+            city,
+            state,
+            zip,
+            country: 'MX',
+            phone,
+            email
         },
         "parcels":[
             {
@@ -138,13 +134,7 @@ app.post('/quotation', async (req, res) => {
                 "mass_unit":"kg",
                 "reference":"Reference 1"
             }
-        ],
-        "order_info":{
-            "order_num":"BA12041",
-            "shipment_type":"Next Day",
-            "status":0,
-            "paid":1
-        }
+        ]
 } 
     const response = await axios.post('https://apiqa.myeship.co/rest/quotation', quotation, {
         headers: {
@@ -268,8 +258,6 @@ app.post('/webhook', async (req, res) => {
         console.log(err)
         return err
     })
-
-    sendConfirmationEmail('marcomussa567@gmail.com')
 })
 
 // Función para verificar la firma del webhook
@@ -283,7 +271,7 @@ const verifyWebhookSignature = (req, res, buf) => {
     if (hash !== signature) {
         throw new Error('Firma del webhook no válida');
     }
-};
+}
 
 // Middleware para verificar la firma del webhook
 app.use((req, res, next) => {
@@ -293,34 +281,36 @@ app.use((req, res, next) => {
     } catch (err) {
         res.status(401).send('Firma del webhook no válida');
     }
-});
+})
 
 const sendConfirmationEmail = (email, orderData) => {
     let transporter = nodemailer.createTransport({
-        service: 'smtp.gmail.com',
-        port: 465,
+        service: process.env.EMAIL_SERVICE,
+        port: process.env.EMAIL_PORT, 
         secure: true,
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
+        }, 
+        tls: {
+            rejectUnauthorized: false
         }
-    });
+    })
 
     let mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
         subject: 'Confirmación de Pedido',
-        text: `Nuevo Pedido Lua Cup
-                ${orderData}`
-    };
+        text: `¡Recibimos tu Pedido, muchas gracias por confiar en Lúa Cup! ${orderData}`
+    }
 
-    //transporter.sendMail(mailOptions, (error, info) => {
-        //if (error) {
-            //return console.log(error);
-        //}
-        //console.log('Email enviado: ' + info.response);
-    //});
-};
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Email enviado: ' + info.response);
+    });
+}
 
 app.listen(3000, () => {
     console.log("Server on Port 3000")

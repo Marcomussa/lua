@@ -19573,5 +19573,19 @@ body > div.page-layout > section.pb-0.top-space-padding.bg-main-lua.full-screen.
 }
 .hide {
   transition: top 0.3s; /* Transición suave de 0.3 segundos para el top */
+}
 
+.quotation {
+  height: 225px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 500px){
+  .quotation {
+    height: 100%;
+  }
+  #button-quotation {
+    width: 100% !important;
+  }
 }

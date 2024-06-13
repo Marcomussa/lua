@@ -52,7 +52,6 @@ let quotationTest =
         }
 } 
      
-
 async function createOrder(shipmentPrice){
     const cart = localStorage.getItem('cartItems')
     const products = JSON.parse(cart)
