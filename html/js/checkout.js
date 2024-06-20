@@ -55,7 +55,6 @@ let quotationTest =
 async function createOrder(shipmentPrice){
     const cart = localStorage.getItem('cartItems')
     const products = JSON.parse(cart)
-    console.log(products)
     const sumaQuantity = products.reduce((acumulador, currentValue) => {
         return acumulador + currentValue.quantity
     }, 0)
@@ -136,7 +135,8 @@ let quotationProd = {
         ]
     }
     
-    //order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number//(shipmentPrice)).toFixed(2))
+    //* Calculo final de precio
+    //! order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
      
     const response = await fetch('http://localhost:3000/create-preference', {
         method: 'POST',

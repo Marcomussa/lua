@@ -8,6 +8,9 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
+//! Deploy Mods
+const serverless = require('serverless-http')
+const router = express.Router()
           
 // SDK de Mercado Pago
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago')
@@ -48,9 +51,7 @@ app.get('/cart', (req, res) => {
 })
 
 app.post('/create-preference', async (req, res) => {
-    const { name, phone, email, address, city, zip, floor, state, details } = req.body.metadata[0]
-
-    console.log(req.body)
+    const { name, phone, email, street, city, zip, floor, state, addressDetails } = req.body.metadata[0]
 
     try {
         const body = {
@@ -61,26 +62,29 @@ app.post('/create-preference', async (req, res) => {
                 failure: 'https://luacup.com'
             },
             auto_return: "approved",
-            notification_url: 'https://8f9e-181-110-147-138.ngrok-free.app/webhook',
+            notification_url: 'https://ed5e-181-164-116-113.ngrok-free.app/webhook',
             metadata: {
                 customer_name: name,
+                customer_phone: phone,
                 customer_email: email,
                 customer_floor: floor,
-                customer_address: address,
+                customer_address: street,
                 customer_city: city,
                 customer_state: state,
                 customer_zip: zip,
-                customer_details: details
+                customer_details: addressDetails
             },
             payer: {
                 'name': name,
                 'address': {
                     'zip_code': zip,
-                    'street_name': `${address, floor, city, state, details}`
+                    'street_name': `${street, floor, city, state, addressDetails}`
                 },
                 'email': email,
             }
         }
+
+        console.log(body)
 
         const preference = new Preference(client)
         const result = await preference.create({ body })
@@ -96,9 +100,7 @@ app.post('/create-preference', async (req, res) => {
 let orderData = {}
 
 app.post('/quotation', async (req, res) => {
-    const { name, phone, email, state, address, floor, city, zip, details } = req.body;
-
-    console.log(req.body)
+    const { name, phone, email, state, address, floor, city, zip, message } = req.body;
 
     const quotation = 
     {
@@ -116,7 +118,7 @@ app.post('/quotation', async (req, res) => {
         "address_to":{
             name,
             "street1": address,
-            company: details,
+            company: message,
             city,
             state,
             zip,
@@ -153,111 +155,77 @@ app.post('/quotation', async (req, res) => {
         floor: floor,
         city: city,
         zip: zip,
-        details: details
+        details: message
     })
 
     return response
 });
 
- app.post('/webhook-test', async (req, res) => {
-    const payment = req.body;
-
-    if (payment.type === 'payment') {
-        try {
-            const response = await client.payment.get(payment.data.id);
-            if (response.body.status === 'approved') {
-                console.log('Webhook Ok')
-                
-                sendConfirmationEmail(response.body.payer.email);
-
-                let orderData = {
-                    "address_from":{
-                        "name":"Not2 Fitness",
-                        "company":"Not2 Fitness",
-                        "street1":"2065 Progress St., Ste A",
-                        "street2":"",
-                        "city":"Vista",
-                        "state":"CA",
-                        "zip":"92081",
-                        "country":"US",
-                        "phone":"6559225181",
-                        "email":"shipping@not2fit.com"
-                    },
-                    "address_to":{
-                        "name":"Jennifer Smith",
-                        "company":"Jennifer Smith",
-                        "street1":"125 Bartley Drive",
-                        "street2":"",
-                        "city":"Newark",
-                        "state":"DE",
-                        "zip":"19702",
-                        "country":"US",
-                        "phone":"3053326755",
-                        "email":"jsmith@example.com"
-                    },
-                    "order_info":{
-                        "order_num":"40172",
-                        "paid":1,
-                        "fulfillment":0,
-                        "shipment_type":"Economy",
-                        "total_price":"1300.99",
-                        "total_shipment":"0.00",
-                        "total_tax":"0.00",
-                        "subtotal_price":"1300.99"
-                    },
-                    "items":[
-                        {
-                            "SKU":"BETP1125",
-                            "description":"Hex Elite TPR Dumbbell 125",
-                            "quantity":2,
-                            "price":"227.50",
-                            "weight":"125",
-                            "currency":"USD"
-                        },
-                        {
-                            "SKU":"RIGG1001",
-                            "description":"Power Rack",
-                            "quantity":1,
-                            "price":"845.99",
-                            "weight":"320",
-                            "currency":"USD"
-                        }
-                    ]
-                }             
-
-                const response = await axios.post('https://apiqa.myeship.co/rest/order', orderData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'api-key': `${process.env.API_KEY}`
-                    }
-                })
-            }
-            res.sendStatus(200);
-        } catch (error) {
-            console.log(error);
-           res.sendStatus(500);
-        }
-    } else {
-        res.sendStatus(400);
-    }
-});
-
+let hasExecuted = false
 app.post('/webhook', async (req, res) => {
     const payment = new Payment(client)
     const paymentId = req.query.id
-    console.log(payment)
 
-    payment.get({
-        id: paymentId,
-    })
-    .then((data) => {
-        console.log(data)
-        return data
-    })
-    .catch((err) => {
-        console.log(err)
-        return err
-    })
+    if(!hasExecuted){
+        payment.get({
+            id: paymentId,
+        })
+        .then((data) => {
+            let relevantData = {
+                customer: {
+                    'Nombre': data.metadata.customer_name,
+                    'Email': data.metadata.customer_email,
+                    'Direccion': data.metadata.customer_address,
+                    'Piso': data.metadata.customer_floor,
+                    'Ciudad': data.metadata.customer_city,
+                    'Estado': data.metadata.customer_state,
+                    'ZIP': data.metadata.customer_zip,
+                    'Detalles': data.metadata.customer_details
+                }, 
+                order: {
+                    'Orden': data.description
+                }
+            }
+
+            let orderDetails = {
+                'address_from': {
+                    'name': 'Sandra Kalach',
+                    'company': 'Lua Cup',
+                    'street1': 'Calzada de la naranja 1G',
+                    'city': 'Naucalpan de Juarez', 
+                    'state': 'Ciudad de Mexico',
+                    'zip': '53370',
+                    'phone': '+525591350245',
+                    'email': 'luacup21@gmail.com',
+                    'country': 'MX'
+                },
+                'address_to': {
+                    'name': data.metadata.customer_name,
+                    'street1': data.metadata.customer_address, 
+                    'city': data.metadata.customer_city,
+                    'state': data.metadata.customer_state, 
+                    'zip': data.metadata.customer_zip,
+                    'country': 'MX',
+                    'phone': data.metadata.customer_phone, 
+                    'email': data.metadata.customer_email
+                }
+            }
+            
+            sendConfirmationEmail('marcomussa567@gmail.com', relevantData)
+            
+            hasExecuted = true
+
+            return axios.post('https://apiqa.myeship.co/rest/order', orderDetails, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'api-key': `${process.env.API_KEY}`
+                }
+            })
+        })
+        .catch((err) => {
+            return err
+        })
+    }
 })
 
 // Función para verificar la firma del webhook
@@ -283,6 +251,7 @@ app.use((req, res, next) => {
     }
 })
 
+
 const sendConfirmationEmail = (email, orderData) => {
     let transporter = nodemailer.createTransport({
         service: process.env.EMAIL_SERVICE,
@@ -301,7 +270,21 @@ const sendConfirmationEmail = (email, orderData) => {
         from: process.env.EMAIL_USER,
         to: email,
         subject: 'Confirmación de Pedido',
-        text: `¡Recibimos tu Pedido, muchas gracias por confiar en Lúa Cup! ${orderData}`
+        text: `¡Recibimos tu Pedido, muchas gracias por confiar en Lúa Cup!`,
+        html: `
+            <h2>Sus datos son los siguientes:</h2>
+            Nombre y Apellido: ${orderData.customer.Nombre} <br>
+            Email: ${orderData.customer.Email} <br>
+            Direccion: ${orderData.customer.Direccion} <br>
+            Piso: ${orderData.customer.Piso} <br>
+            Estado: ${orderData.customer.Estado} <br>
+            Ciudad: ${orderData.customer.Ciudad} <br>
+            ZIP: ${orderData.customer.ZIP} <br>
+            Detalles extras de la direccion: ${orderData.customer.Detalles} <br>
+            Detalles de la orden: ${orderData.order.Orden} <br>
+
+            ¡Muchas gracias! Despacharemos tu pedido hoy mismo.
+        `
     }
 
     transporter.sendMail(mailOptions, (error, info) => {

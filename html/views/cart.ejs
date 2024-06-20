@@ -227,7 +227,7 @@
                                 </div>
                                 <div class="position-relative form-group mb-20px">
                                   <span class="form-icon"><i class="bi bi-phone icon-extra-medium"></i></span>
-                                  <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="text" name="phone" placeholder="Telefono*" id="phone-order" value="<%= phone || '' %>">
+                                  <input class="ps-0 border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control required" type="tel" name="phone" placeholder="Telefono*" id="phone-order" value="<%= phone || '' %>" maxlength="15">
                                 </div>
                                 <div class="position-relative form-group mb-20px">
                                     <span class="form-icon"><i class="bi bi-envelope icon-extra-medium"></i></span>
@@ -266,9 +266,9 @@
                                 </div>
 
                                 <div class="position-relative form-group mb-20px">
-                                  <select name='state' value="<%= state || '' %>" id="state-order" class="required border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control" style="padding: 10px 0px;
+                                  <select name='state' id="state-order" class="required border-radius-0px fs-17 bg-transparent border-color-transparent-white-light placeholder-medium-gray form-control" style="padding: 10px 0px;
                                   width: 100% !important;">
-                                    <option value="Seleccionar Estado" disabled selected>Estado*</option>
+                                    <option value="<%= state || '' %>" disabled selected>Estado*</option>
                                     <option value="Aguascalientes">Aguascalientes</option>
                                     <option value="Baja California">Baja California</option>
                                     <option value="Baja California Sur">Baja California Sur</option>
@@ -475,8 +475,9 @@
       }
     </style>
     <script>
-            // When the user scrolls the page, execute myFunction
-            let prevScrollpos = window.pageYOffset;
+
+
+let prevScrollpos = window.pageYOffset;
 let isAtTop = true;
 
 window.onscroll = function() {
@@ -495,5 +496,30 @@ window.onscroll = function() {
     prevScrollpos = currentScrollPos;
 }
     </script>
+    <script>
+      document.getElementById('order-form').addEventListener('submit', function(event) {
+          const requiredFields = document.querySelectorAll('.required');
+          let isValid = true;
+      
+          requiredFields.forEach(function(field) {
+              if (!field.value.trim()) {
+                  field.style.borderColor = 'red';
+                  isValid = false;
+              } else {
+                  field.style.borderColor = '';
+              }
+          });
+      
+          if (!isValid) {
+              event.preventDefault();
+              Swal.fire({
+                title: "Por favor",
+                html: `Complete todos los campos requeridos`,
+                icon: "error",
+              })
+          }
+      });
+      </script>
+      
 </html>
 
