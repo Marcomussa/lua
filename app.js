@@ -57,12 +57,12 @@ app.post('/create-preference', async (req, res) => {
         const body = {
             items: req.body.items, 
             back_urls: {
-                success: 'https://luacup.com',
-                pending: 'https://luacup.com',
-                failure: 'https://luacup.com'
+                success: 'https://luacup.onrender.com',
+                pending: 'https://luacup.onrender.com',
+                failure: 'https://luacup.onrender.com'
             },
             auto_return: "approved",
-            notification_url: 'https://ed5e-181-164-116-113.ngrok-free.app/webhook',
+            notification_url: 'https://luacup.onrender.com/webhook',
             metadata: {
                 customer_name: name,
                 customer_phone: phone,
@@ -155,7 +155,7 @@ app.post('/quotation', async (req, res) => {
         floor: floor,
         city: city,
         zip: zip,
-        details: message
+        details: message,
     })
 
     return response

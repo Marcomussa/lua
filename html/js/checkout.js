@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     renderCartItems()
     updateTotal()
+    validateCheckout()
+    freezeButtons()
 })
 // APP_USR-534177af-5707-41cc-852e-a44929cf1b34
 const mp = new MercadoPago('APP_USR-f04a3dc9-d376-4d22-8e6e-0d0e6b78f02d', {
@@ -63,19 +65,17 @@ async function createOrder(shipmentPrice){
         return `${product.name}, Cantidad: ${product.quantity}, Size: ${product.size}`
     }).join(' | ')
 
-    
+    let customer = document.querySelector("#name-order").value
+    let phone = document.querySelector("#phone-order").value
+    let email = document.querySelector("#email-order").value
+    let state = document.querySelector("#state-order").value
+    let street = document.querySelector("#address-order").value
+    let floor = document.querySelector("#floor-order").value
+    let city = document.querySelector("#city-order").value
+    let zip = document.querySelector("#zip-order").value
+    let addressDetails = document.querySelector("#details-order").value
 
-let customer = document.querySelector("#name-order").value
-let phone = document.querySelector("#phone-order").value
-let email = document.querySelector("#email-order").value
-let state = document.querySelector("#state-order").value
-let street = document.querySelector("#address-order").value
-let floor = document.querySelector("#floor-order").value
-let city = document.querySelector("#city-order").value
-let zip = document.querySelector("#zip-order").value
-let addressDetails = document.querySelector("#details-order").value
-
-let quotationProd = {
+    let quotationProd = {
     "address_from": {
         "name": 'Sandra Kalach',
         'company': 'Lua Cup',
@@ -109,7 +109,7 @@ let quotationProd = {
             "reference": null
         }
     ]
-} 
+    } 
 
     const order = {
         items: [
@@ -138,7 +138,7 @@ let quotationProd = {
     //* Calculo final de precio
     //! order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
      
-    const response = await fetch('http://localhost:3000/create-preference', {
+    const response = await fetch('http://luacup.onrender.com/create-preference', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -169,42 +169,44 @@ const createCheckoutButton = (preferenceId) => {
   }
 }
 
-function generateItemsArray(cartItems) {
-    return cartItems.map(item => {
-        return {
-            SKU: null,
-            description: item.name,
-            quantity: item.quantity,
-            price: item.price,
-            weight: "",
-            currency: "MEX",
+function freezeButtons(){
+    const currentPath = window.location.pathname
+    let increaseButton = document.getElementsByClassName('increaseButton')
+    let decreaseButton = document.getElementsByClassName('decreaseButton')
+    
+    if(currentPath == '/quotation'){
+        for (let i = 0; i < increaseButton.length; i++) {
+           increaseButton[i].classList.add('disabled')
+           decreaseButton[i].classList.add('disabled') 
         }
-    })
+    }
 }
 
-function getOrderData() {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || []
-    const itemsArray = generateItemsArray(cartItems)
+function validateCheckout(){
+    let orderForm = document.getElementById('order-form')
 
-    const orderData = {
-        address_from: {
-            // Detalles de Lua Cup
-        },
-        address_to: {
-            name: customer.value,
-            company: addressDetails.value,
-            street1: street.value,
-            city: city.value,
-            state: state.value,
-            zip: zip.value,
-            phone: phone.value,
-            email: email.value,
-            country: "MX"
-        },
-        items: itemsArray,
-    }
-
-    return orderData
+    orderForm.addEventListener('submit', function(event) {
+        const requiredFields = document.querySelectorAll('.required')
+        let isValid = true
+    
+        requiredFields.forEach(function(field) {
+            if (!field.value.trim()) {
+                field.style.borderColor = 'red'
+                isValid = false;
+            } else {
+                field.style.borderColor = ''
+            }
+        });
+    
+        if (!isValid) {
+            event.preventDefault();
+            Swal.fire({
+              title: "Por favor",
+              html: `Complete todos los campos requeridos`,
+              icon: "error",
+            })
+        } 
+    })
 }
 
 function renderCartItems() {
@@ -227,7 +229,7 @@ function renderCartItems() {
             
 
             const increaseButton = document.createElement('button')
-            increaseButton.classList.add('btn', 'btn-primary')
+            increaseButton.classList.add('btn', 'btn-primary', 'increaseButton')
             increaseButton.textContent = '+'
             increaseButton.addEventListener('click', function() {
                 cartItems[index].quantity++
@@ -237,7 +239,7 @@ function renderCartItems() {
             })
 
             const decreaseButton = document.createElement('button')
-            decreaseButton.classList.add('btn', 'btn-primary')
+            decreaseButton.classList.add('btn', 'btn-primary', 'decreaseButton')
             decreaseButton.textContent = '-'
             decreaseButton.addEventListener('click', function() {
                 if (cartItems[index].quantity > 1) {
@@ -250,7 +252,7 @@ function renderCartItems() {
 
             const deleteButton = document.createElement('button')
             deleteButton.textContent = 'Eliminar'
-            deleteButton.classList.add('btn', 'btn-danger')
+            deleteButton.classList.add('btn', 'btn-danger', 'deleteButton')
             
             deleteButton.addEventListener('click', function() {
                 Swal.fire({
