@@ -136,7 +136,7 @@ async function createOrder(shipmentPrice){
     }
     
     //* Calculo final de precio
-    //! order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
+    order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
      
     const response = await fetch('https://luacup.onrender.com/create-preference', {
         method: 'POST',

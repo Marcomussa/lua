@@ -211,6 +211,8 @@ app.post('/webhook', async (req, res) => {
                 }
             }
             
+            //todo: Cambiar mail x el del cliente
+            //! relevantData.customer.email
             sendConfirmationEmail('marcomussa567@gmail.com', relevantData)
             
             hasExecuted = true
