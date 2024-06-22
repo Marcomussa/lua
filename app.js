@@ -249,11 +249,11 @@ app.post('/webhook', (req, res) => {
                         });
                     })
                     .then(response => {
+                        console.log('Respuesta de eShip:', response.data);
                         res.status(200).json({ message: 'Webhook procesado exitosamente.', data: response.data });
                     })
                     .catch(err => {
-                        console.error('Error procesando el webhook:', err);
-                        res.status(500).json({ error: 'Error procesando el webhook.' });
+                        console.log('Error procesando el webhook:', err);
                     });
                 })
             .catch(err => {
@@ -268,7 +268,7 @@ app.post('/webhook', (req, res) => {
         console.error('Error verificando el estado del pago:', err);
         res.status(500).json({ error: 'Error verificando el estado del pago.' });
       });
-  });
+})
 
 // Función para verificar la firma del webhook
 const verifyWebhookSignature = (req, res, buf) => {
