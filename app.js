@@ -7,18 +7,42 @@ const axios = require('axios');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-
-//! Deploy Mods
-const serverless = require('serverless-http')
-const router = express.Router()
+const { MongoClient, ServerApiVersion} = require('mongodb');
           
-// SDK de Mercado Pago
+//! SDK de Mercado Pago
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago')
-// Agrega credenciales
 const client = new MercadoPagoConfig({ 
     accessToken: process.env.ACCESS_TOKEN_TEST_AR
 })
 
+//! Mongo DB Settings
+const uriMongo = `mongodb+srv://desarrollo:${process.env.MONGO_PASS}@luacuppayments.pihi42d.mongodb.net/?retryWrites=true&w=majority&appName=LuacupPayments`
+const mongo = new MongoClient(uriMongo, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    }
+})
+
+//! Mongo Conection & Get Payment ID's
+let db
+let paymentsCollection
+async function connectToMongoDB() {
+    try {
+      await mongo.connect();
+      console.log('Connected to MongoDB');
+      db = mongo.db('Payments-IDs');
+      paymentsCollection = db.collection('Payments')
+    } catch (err) {
+      console.error('Error connecting to MongoDB:', err)
+      process.exit(1);
+    }
+}
+connectToMongoDB()
+
+
+//! Express Settings  
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname + '/html/', 'views'));
 app.use(express.static(path.join(__dirname, 'html')));
@@ -27,6 +51,7 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//! Routes
 app.get('/', (req, res) => {
     res.render('index')
 })
@@ -97,8 +122,6 @@ app.post('/create-preference', async (req, res) => {
     }
 })
 
-let orderData = {}
-
 app.post('/quotation', async (req, res) => {
     const { name, phone, email, state, address, floor, city, zip, message } = req.body;
 
@@ -161,74 +184,91 @@ app.post('/quotation', async (req, res) => {
     return response
 });
 
-let hasExecuted = false
-app.post('/webhook', async (req, res) => {
-    const payment = new Payment(client)
-    const paymentId = req.query.id
-
-    if(!hasExecuted){
-        payment.get({
-            id: paymentId,
-        })
-        .then((data) => {
-            let relevantData = {
+app.post('/webhook', (req, res) => {
+    const paymentId = req.query.id;
+  
+    paymentsCollection.findOne({ paymentId: paymentId })
+        .then(paymentProcessed => {
+            if (!paymentProcessed) {
+                const payment = new Payment(client)
+                payment.get({ 
+                    id: paymentId 
+                })
+                .then(data => {
+                    let relevantData = {
                 customer: {
-                    'Nombre': data.metadata.customer_name,
-                    'Email': data.metadata.customer_email,
-                    'Direccion': data.metadata.customer_address,
-                    'Piso': data.metadata.customer_floor,
-                    'Ciudad': data.metadata.customer_city,
-                    'Estado': data.metadata.customer_state,
-                    'ZIP': data.metadata.customer_zip,
-                    'Detalles': data.metadata.customer_details
-                }, 
+                  'Nombre': data.metadata.customer_name,
+                  'Email': data.metadata.customer_email,
+                  'Direccion': data.metadata.customer_address,
+                  'Piso': data.metadata.customer_floor,
+                  'Ciudad': data.metadata.customer_city,
+                  'Estado': data.metadata.customer_state,
+                  'ZIP': data.metadata.customer_zip,
+                  'Detalles': data.metadata.customer_details
+                },
                 order: {
-                    'Orden': data.description
+                  'Orden': data.description
                 }
-            }
-
-            let orderDetails = {
+                    };
+  
+                    let orderDetails = {
                 'address_from': {
-                    'name': 'Sandra Kalach',
-                    'company': 'Lua Cup',
-                    'street1': 'Calzada de la naranja 1G',
-                    'city': 'Naucalpan de Juarez', 
-                    'state': 'Ciudad de Mexico',
-                    'zip': '53370',
-                    'phone': '+525591350245',
-                    'email': 'luacup21@gmail.com',
-                    'country': 'MX'
+                  'name': 'Sandra Kalach',
+                  'company': 'Lua Cup',
+                  'street1': 'Calzada de la naranja 1G',
+                  'city': 'Naucalpan de Juarez',
+                  'state': 'Ciudad de Mexico',
+                  'zip': '53370',
+                  'phone': '+525591350245',
+                  'email': 'luacup21@gmail.com',
+                  'country': 'MX'
                 },
                 'address_to': {
-                    'name': data.metadata.customer_name,
-                    'street1': data.metadata.customer_address, 
-                    'city': data.metadata.customer_city,
-                    'state': data.metadata.customer_state, 
-                    'zip': data.metadata.customer_zip,
-                    'country': 'MX',
-                    'phone': data.metadata.customer_phone, 
-                    'email': data.metadata.customer_email
+                  'name': data.metadata.customer_name,
+                  'street1': data.metadata.customer_address,
+                  'city': data.metadata.customer_city,
+                  'state': data.metadata.customer_state,
+                  'zip': data.metadata.customer_zip,
+                  'country': 'MX',
+                  'phone': data.metadata.customer_phone,
+                  'email': data.metadata.customer_email
                 }
-            }
-            
-            //todo: Cambiar mail x el del cliente
-            //! relevantData.customer.email
-            sendConfirmationEmail('marcomussa567@gmail.com', relevantData)
-            
-            hasExecuted = true
-
-            return axios.post('https://apiqa.myeship.co/rest/order', orderDetails, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'api-key': `${process.env.API_KEY}`
-                }
-            })
-        })
-        .catch((err) => {
-            return err
-        })
-    }
-})
+                    };
+  
+                    sendConfirmationEmail('marcomussa567@gmail.com', relevantData);
+  
+                    paymentsCollection.insertOne({ 
+                        paymentId: paymentId 
+                    })
+                    .then(() => {
+                        return axios.post('https://apiqa.myeship.co/rest/order', orderDetails, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'api-key': `${process.env.API_KEY}`
+                            }
+                        });
+                    })
+                    .then(response => {
+                        res.status(200).json({ message: 'Webhook procesado exitosamente.', data: response.data });
+                    })
+                    .catch(err => {
+                        console.error('Error procesando el webhook:', err);
+                        res.status(500).json({ error: 'Error procesando el webhook.' });
+                    });
+                })
+            .catch(err => {
+              console.error('Error obteniendo datos del pago:', err);
+              res.status(500).json({ error: 'Error obteniendo datos del pago.' });
+            });
+        } else {
+          res.status(200).json({ message: 'Acción única ya ejecutada para este pago.' });
+        }
+      })
+      .catch(err => {
+        console.error('Error verificando el estado del pago:', err);
+        res.status(500).json({ error: 'Error verificando el estado del pago.' });
+      });
+  });
 
 // Función para verificar la firma del webhook
 const verifyWebhookSignature = (req, res, buf) => {
@@ -252,7 +292,6 @@ app.use((req, res, next) => {
         res.status(401).send('Firma del webhook no válida');
     }
 })
-
 
 const sendConfirmationEmail = (email, orderData) => {
     let transporter = nodemailer.createTransport({
@@ -297,6 +336,7 @@ const sendConfirmationEmail = (email, orderData) => {
     });
 }
 
+//! Server
 app.listen(3000, () => {
     console.log("Server on Port 3000")
 })

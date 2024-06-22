@@ -25,6 +25,7 @@
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "mercadopago": "^2.0.9",
+    "mongodb": "^6.7.0",
     "netlify-cli": "^17.26.2",
     "netlify-lambda": "^2.0.16",
     "nodemailer": "^6.9.13",
