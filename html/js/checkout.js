@@ -54,7 +54,7 @@ let quotationTest =
         }
 } 
      
-async function createOrder(shipmentPrice){
+async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
     const cart = localStorage.getItem('cartItems')
     const products = JSON.parse(cart)
     const sumaQuantity = products.reduce((acumulador, currentValue) => {
@@ -130,10 +130,15 @@ async function createOrder(shipmentPrice){
                 city,
                 state,
                 zip,
-                addressDetails
+                addressDetails,
+                shipmentProvider,
+                shipmentDays
             }
         ]
     }
+
+    order.metadata.shipmentProvider = shipmentProvider
+    order.metadata.shipmentDays = shipmentDays
     
     //* Calculo final de precio
     //! order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))

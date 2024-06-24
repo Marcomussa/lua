@@ -197,14 +197,15 @@
                               width: 33%;
                               border: none;
                               text-align: left;"
-                              onclick="createOrder('<%= rate.amount %>')"
+                              onclick="createOrder('<%= rate.amount %>', '<%= rate.provider %>', '<%= rate.days %>')"
                               id="button-quotation">
                                 <div class="quotation col-md-12 bg-light-gray" style="
                                   display: inline-block; 
                                   padding: 20px; ">
-                                  <p class="mb-5px fw-600"><%= rate.provider %></p>
-                                  <p class="mb-5px"><span class="fw-600"><%= rate.days %> </span>Días</p>
-                                  <p class="mb-5px">Envio: <span class="fw-600"><%= rate.amount %> <%= rate.currency %></span></p>                                
+                                  <p class="mb-5px fw-600 rateProvider"><%= rate.provider %></p>
+                                  <p class="mb-5px"><span class="fw-600 rateDays"><%= rate.days %> </span>Días</p>
+                                  <p class="mb-5px">Envio: <span class="fw-600"><%= rate.amount %></span></p>
+                                  <p class="mb-5px"><%= rate.currency %></p>                                 
                                 </div>
                               </button>
                             <% }) %>

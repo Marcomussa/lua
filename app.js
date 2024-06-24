@@ -76,7 +76,9 @@ app.get('/cart', (req, res) => {
 })
 
 app.post('/create-preference', async (req, res) => {
-    const { name, phone, email, street, city, zip, floor, state, addressDetails } = req.body.metadata[0]
+    const { name, phone, email, street, city, zip, floor, state, addressDetails, shipmentProvider, shipmentDays } = req.body.metadata[0]
+
+    console.log(req.body.metadata[0])
 
     try {
         const body = {
@@ -97,7 +99,8 @@ app.post('/create-preference', async (req, res) => {
                 customer_city: city,
                 customer_state: state,
                 customer_zip: zip,
-                customer_details: addressDetails
+                customer_details: addressDetails,
+                customer_shipmentType: `${shipmentProvider} | ${shipmentDays} dia/s`
             },
             payer: {
                 'name': name,
@@ -207,7 +210,8 @@ app.post('/webhook', (req, res) => {
                   'Detalles': data.metadata.customer_details
                 },
                 order: {
-                  'Orden': data.description
+                  'Orden': data.description,
+                  'TipoEnvio': data.metadata.customer_shipmentType
                 }
                     };
   
@@ -232,7 +236,13 @@ app.post('/webhook', (req, res) => {
                   'country': 'MX',
                   'phone': data.metadata.customer_phone,
                   'email': data.metadata.customer_email
-                }
+                },
+                'order_info': {
+                    'shipment_type': data.metadata.customer_shipmentType
+                },
+                'items': [{
+                    'description': data.description
+                }]
                     };
   
                     sendConfirmationEmail('marcomussa567@gmail.com', relevantData);
@@ -323,6 +333,7 @@ const sendConfirmationEmail = (email, orderData) => {
             ZIP: ${orderData.customer.ZIP} <br>
             Detalles extras de la direccion: ${orderData.customer.Detalles} <br>
             Detalles de la orden: ${orderData.order.Orden} <br>
+            Detalles del metodo de envio: ${orderData.customer.tipoEnvio}
 
             ¡Muchas gracias! Despacharemos tu pedido hoy mismo.
         `
