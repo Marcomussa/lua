@@ -200,7 +200,7 @@ app.post('/webhook', (req, res) => {
                     let match
                     let totalCantidad = 0
 
-                    while((match = regex.match(data.description) !== null)){
+                    while((match = regex.exec(data.description) !== null)){
                         totalCantidad += parseInt(match[1], 10)
                     }
 
