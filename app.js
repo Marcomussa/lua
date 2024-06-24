@@ -196,6 +196,14 @@ app.post('/webhook', (req, res) => {
                     id: paymentId 
                 })
                 .then(data => {
+                    const regex = /Cantidad: (\d+)/g
+                    let match
+                    let totalCantidad = 0
+
+                    while((match = regex.match(data.description) !== null)){
+                        totalCantidad += parseInt(match[1], 10)
+                    }
+
                     let relevantData = {
                 customer: {
                   'Nombre': data.metadata.customer_name,
@@ -239,6 +247,8 @@ app.post('/webhook', (req, res) => {
                     'shipment_type': data.metadata.customer_shipment_type
                 },
                 'items': [{
+                    'quantity': totalCantidad,
+                    'price': 450,
                     'description': data.description
                 }]
                     };
@@ -332,9 +342,9 @@ const sendConfirmationEmail = (email, orderData) => {
             ZIP: ${orderData.customer.ZIP} <br>
             Detalles extras de la direccion: ${orderData.customer.Detalles} <br>
             Detalles de la orden: ${orderData.order.Orden} <br>
-            Detalles del metodo de envio: ${orderData.order.TipoEnvio}
+            Detalles del metodo de envio: ${orderData.order.TipoEnvio} <br>
 
-            ¡Muchas gracias! Despacharemos tu pedido hoy mismo.
+            <h3>¡Muchas gracias! Despacharemos tu pedido hoy mismo.</h3>
         `
     }
 
