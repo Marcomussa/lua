@@ -248,7 +248,7 @@ app.post('/webhook', (req, res) => {
                   'email': data.metadata.customer_email
                 },
                 'order_info': {
-                    'shipment_type': data.metadata.customer_shipment_type
+                    'shipment_type': `${data.metadata.customer_shipment_type} | ${data.metadata.customer_shipment_days}`
                 },
                 'items': [{
                     'quantity': totalCantidad,
@@ -266,7 +266,7 @@ app.post('/webhook', (req, res) => {
                         paymentId: paymentId 
                     })
                     .then(() => {
-                        return axios.post('https://apiqa.myeship.co/rest/order', orderDetails, {
+                        return axios.post('https://api.myeship.co/rest/order', orderDetails, {
                             headers: {
                                 'Content-Type': 'application/json',
                                 'api-key': `${process.env.API_KEY_ESHIP_PROD}`
@@ -336,26 +336,25 @@ const sendConfirmationEmail = (email, orderData) => {
         subject: 'Confirmación de Pedido',
         text: `¡Recibimos tu Pedido, muchas gracias por confiar en Lúa Cup!`,
         html: `
-            <h2>Sus datos son los siguientes:</h2>
-            Nombre y Apellido: ${orderData.customer.Nombre} <br>
-            Email: ${orderData.customer.Email} <br>
-            Direccion: ${orderData.customer.Direccion} <br>
-            Piso: ${orderData.customer.Piso} <br>
-            Estado: ${orderData.customer.Estado} <br>
-            Ciudad: ${orderData.customer.Ciudad} <br>
-            ZIP: ${orderData.customer.ZIP} <br>
-            Detalles extras de la direccion: ${orderData.customer.Detalles} <br>
-            Detalles de la orden: ${orderData.order.Orden} <br>
-            Detalles del metodo de envio: 
+            <h2>Sus datos son los siguientes:</h2> 
+            <b>Nombre y Apellido: ${orderData.customer.Nombre} </b> <br>
+            <b>Email: ${orderData.customer.Email} </b> <br>
+            <b>Direccion: ${orderData.customer.Direccion}</b>  <br>
+            <b>Piso: ${orderData.customer.Piso} </b> <br>
+            <b>Estado: ${orderData.customer.Estado}</b>  <br>
+            <b>Ciudad: ${orderData.customer.Ciudad} </b> <br>
+            <b>ZIP: ${orderData.customer.ZIP} </b> <br>
+            <b>Detalles extras de la direccion: ${orderData.customer.Detalles}</b>  <br>
+            <b>Detalles de la orden: ${orderData.order.Orden}</b>  <br>
+            <b>Detalles del metodo de envio: 
                 <ul>
-                    <li>${orderData.order.TipoEnvio} </li>
-                    <li>${orderData.order.CostoEnvio}</li>
-                    <li>${orderData.order.DiasEnvio} Dia/s</li>
+                    <li>Proveedor: ${orderData.order.TipoEnvio} </li>
+                    <li>Costo de envio: $${orderData.order.CostoEnvio}</li>
+                    <li>Dias: ${orderData.order.DiasEnvio} Dia/s</li>
                 </ul>
             <br>
 
-            <h3>¡Muchas gracias! Despacharemos tu pedido hoy mismo.</h3>
-        `
+            <h3>¡Muchas gracias! Despacharemos tu pedido hoy mismo.</h3>`
     }
 
     transporter.sendMail(mailOptions, (error, info) => {
