@@ -112,8 +112,6 @@ app.post('/create-preference', async (req, res) => {
             }
         }
 
-        console.log(body)
-
         const preference = new Preference(client)
         const result = await preference.create({ body })
 
@@ -198,6 +196,7 @@ app.post('/webhook', (req, res) => {
                     id: paymentId 
                 })
                 .then(data => {
+                    console.log(data)
                     let relevantData = {
                 customer: {
                   'Nombre': data.metadata.customer_name,
@@ -259,7 +258,6 @@ app.post('/webhook', (req, res) => {
                         });
                     })
                     .then(response => {
-                        console.log('Respuesta de eShip:', response.data);
                         res.status(200).json({ message: 'Webhook procesado exitosamente.', data: response.data });
                     })
                     .catch(err => {
