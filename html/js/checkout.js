@@ -116,7 +116,7 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
             {
                 title: resultString, 
                 quantity: 1,
-                unit_price: 1,
+                unit_price: 450,
                 currency_id: 'MXN'
             }
         ],      
