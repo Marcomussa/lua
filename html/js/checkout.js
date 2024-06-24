@@ -132,11 +132,13 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
                 zip,
                 addressDetails,
                 shipmentProvider,
-                shipmentDays
+                shipmentDays,
+                shipmentPrice
             }
         ]
     }
 
+    order.metadata.shipmentPrice = shipmentPrice
     order.metadata.shipmentProvider = shipmentProvider
     order.metadata.shipmentDays = shipmentDays
     

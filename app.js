@@ -217,7 +217,9 @@ app.post('/webhook', (req, res) => {
                 },
                 order: {
                   'Orden': data.description,
-                  'TipoEnvio': data.metadata.customer_shipment_type
+                  'TipoEnvio': data.metadata.customer_shipment_type,
+                  'CostoEnvio': data.metadata.customer_shipment_price,
+                  'DiasEnvio': data.metadata.customer_shipment_days
                 }
                     };
   
@@ -342,7 +344,13 @@ const sendConfirmationEmail = (email, orderData) => {
             ZIP: ${orderData.customer.ZIP} <br>
             Detalles extras de la direccion: ${orderData.customer.Detalles} <br>
             Detalles de la orden: ${orderData.order.Orden} <br>
-            Detalles del metodo de envio: ${orderData.order.TipoEnvio} <br>
+            Detalles del metodo de envio: 
+                <ul>
+                    <li>${orderData.order.TipoEnvio} </li>
+                    <li>${orderData.order.CostoEnvio}</li>
+                    <li>${orderData.order.DiasEnvio} Dia/s</li>
+                </ul>
+            <br>
 
             <h3>¡Muchas gracias! Despacharemos tu pedido hoy mismo.</h3>
         `
