@@ -100,7 +100,7 @@ app.post('/create-preference', async (req, res) => {
                 customer_state: state,
                 customer_zip: zip,
                 customer_details: addressDetails,
-                customer_shipmentType: `${shipmentProvider} | ${shipmentDays} dia/s`
+                customer_shipment_type: `${shipmentProvider} | ${shipmentDays} dia/s`
             },
             payer: {
                 'name': name,
@@ -210,7 +210,7 @@ app.post('/webhook', (req, res) => {
                 },
                 order: {
                   'Orden': data.description,
-                  'TipoEnvio': data.metadata.customer_shipmentType
+                  'TipoEnvio': data.metadata.customer_shipment_type
                 }
                     };
   
@@ -237,7 +237,7 @@ app.post('/webhook', (req, res) => {
                   'email': data.metadata.customer_email
                 },
                 'order_info': {
-                    'shipment_type': data.metadata.customer_shipmentType
+                    'shipment_type': data.metadata.customer_shipment_type
                 },
                 'items': [{
                     'description': data.description
