@@ -76,7 +76,7 @@ app.get('/cart', (req, res) => {
 })
 
 app.post('/create-preference', async (req, res) => {
-    const { name, phone, email, street, city, zip, floor, state, addressDetails, shipmentProvider, shipmentDays } = req.body.metadata[0]
+    const { name, phone, email, street, city, zip, floor, state, addressDetails, shipmentProvider, shipmentDays, shipmentPrice } = req.body.metadata[0]
 
     console.log(req.body.metadata[0])
 
@@ -100,7 +100,9 @@ app.post('/create-preference', async (req, res) => {
                 customer_state: state,
                 customer_zip: zip,
                 customer_details: addressDetails,
-                customer_shipment_type: `${shipmentProvider} | ${shipmentDays} dia/s`
+                customer_shipment_type: shipmentProvider,
+                customer_shipment_price: shipmentPrice,
+                customer_shipment_days: shipmentDays
             },
             payer: {
                 'name': name,
