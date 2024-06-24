@@ -196,7 +196,6 @@ app.post('/webhook', (req, res) => {
                     id: paymentId 
                 })
                 .then(data => {
-                    console.log(data)
                     let relevantData = {
                 customer: {
                   'Nombre': data.metadata.customer_name,
@@ -243,6 +242,8 @@ app.post('/webhook', (req, res) => {
                     'description': data.description
                 }]
                     };
+
+                    console.log(orderDetails)
   
                     sendConfirmationEmail('marcomussa567@gmail.com', relevantData);
   
@@ -331,7 +332,7 @@ const sendConfirmationEmail = (email, orderData) => {
             ZIP: ${orderData.customer.ZIP} <br>
             Detalles extras de la direccion: ${orderData.customer.Detalles} <br>
             Detalles de la orden: ${orderData.order.Orden} <br>
-            Detalles del metodo de envio: ${orderData.customer.tipoEnvio}
+            Detalles del metodo de envio: ${orderData.order.TipoEnvio}
 
             ¡Muchas gracias! Despacharemos tu pedido hoy mismo.
         `
