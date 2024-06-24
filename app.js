@@ -162,10 +162,10 @@ app.post('/quotation', async (req, res) => {
             }
         ]
 } 
-    const response = await axios.post('https://apiqa.myeship.co/rest/quotation', quotation, {
+    const response = await axios.post('https://api.myeship.co/rest/quotation', quotation, {
         headers: {
             'Content-Type': 'application/json',
-            'api-key': `${process.env.API_KEY}`
+            'api-key': `${process.env.API_KEY_ESHIP_PROD}`
         }
     })
 
@@ -255,7 +255,8 @@ app.post('/webhook', (req, res) => {
 
                     console.log(orderDetails)
   
-                    sendConfirmationEmail('marcomussa567@gmail.com', relevantData);
+                    sendConfirmationEmail(data.metadata.customer_email, relevantData)
+                    sendConfirmationEmail('marcomussa567@gmail.com', relevantData)
   
                     paymentsCollection.insertOne({ 
                         paymentId: paymentId 
@@ -264,7 +265,7 @@ app.post('/webhook', (req, res) => {
                         return axios.post('https://apiqa.myeship.co/rest/order', orderDetails, {
                             headers: {
                                 'Content-Type': 'application/json',
-                                'api-key': `${process.env.API_KEY}`
+                                'api-key': `${process.env.API_KEY_ESHIP_PROD}`
                             }
                         });
                     })
@@ -277,7 +278,6 @@ app.post('/webhook', (req, res) => {
                 })
             .catch(err => {
               console.error('Error obteniendo datos del pago:', err);
-              res.status(500).json({ error: 'Error obteniendo datos del pago.' });
             });
         } else {
           res.status(200).json({ message: 'Acción única ya ejecutada para este pago.' });
