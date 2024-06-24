@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     freezeButtons()
 })
 // APP_USR-534177af-5707-41cc-852e-a44929cf1b34
-const mp = new MercadoPago('APP_USR-f04a3dc9-d376-4d22-8e6e-0d0e6b78f02d', {
+const mp = new MercadoPago('APP_USR-534177af-5707-41cc-852e-a44929cf1b34', {
     locale: 'es-MX'
 })  
 
@@ -117,7 +117,7 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
                 title: resultString, 
                 quantity: 1,
                 unit_price: 1,
-                currency_id: 'ARS'
+                currency_id: 'MXN'
             }
         ],      
         metadata: [

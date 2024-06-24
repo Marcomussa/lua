@@ -7,12 +7,12 @@ const axios = require('axios');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const { MongoClient, ServerApiVersion} = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
           
 //! SDK de Mercado Pago
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago')
 const client = new MercadoPagoConfig({ 
-    accessToken: process.env.ACCESS_TOKEN_TEST_AR
+    accessToken: process.env.ACCESS_TOKEN_MEX
 })
 
 //! Mongo DB Settings
@@ -158,9 +158,9 @@ app.post('/quotation', async (req, res) => {
                 "height":20,
                 "width":10,
                 "distance_unit":"cm",
-                "weight":1,
+                "weight":0.25,
                 "mass_unit":"kg",
-                "reference":"Reference 1"
+                "reference":"Lua Cup"
             }
         ]
 } 
@@ -248,7 +248,7 @@ app.post('/webhook', (req, res) => {
                   'email': data.metadata.customer_email
                 },
                 'order_info': {
-                    'shipment_type': `${data.metadata.customer_shipment_type} | ${data.metadata.customer_shipment_days}`
+                    'shipment_type': `${data.metadata.customer_shipment_type} | ${data.metadata.customer_shipment_days} dia/s`
                 },
                 'items': [{
                     'quantity': totalCantidad,
@@ -260,7 +260,7 @@ app.post('/webhook', (req, res) => {
                     console.log(orderDetails)
   
                     sendConfirmationEmail(data.metadata.customer_email, relevantData)
-                    sendConfirmationEmail('marcomussa567@gmail.com', relevantData)
+                    sendConfirmationEmail('luacup21@gmail.com', relevantData)
   
                     paymentsCollection.insertOne({ 
                         paymentId: paymentId 
