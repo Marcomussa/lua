@@ -200,7 +200,7 @@ app.post('/webhook', (req, res) => {
                     let match
                     let totalCantidad = 0
 
-                    while((match = regex.exec(data.description) !== null)){
+                    while((match = regex.exec(data.description)) !== null){
                         totalCantidad += parseInt(match[1], 10)
                     }
 
@@ -272,7 +272,7 @@ app.post('/webhook', (req, res) => {
                         res.status(200).json({ message: 'Webhook procesado exitosamente.', data: response.data });
                     })
                     .catch(err => {
-                        console.log('Error procesando el webhook:', err);
+                        console.log('Error procesando el webhook:', err.message);
                     });
                 })
             .catch(err => {
