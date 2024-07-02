@@ -165,9 +165,6 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
 async function payPalOrder(){
     const response = await fetch('https://luacup.onrender.com/create-order', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
     })
     const data = await response.json()
     console.log(data)
