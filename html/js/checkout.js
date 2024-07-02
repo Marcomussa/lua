@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotal()
     validateCheckout()
     freezeButtons()
-    paypalBtn.addEventListener('click', payPalOrder())
+    paypalBtn.addEventListener('click', payPalOrder)
 })
 
 const paypalContainer = document.getElementById('checkout-container')
