@@ -295,17 +295,7 @@ app.post('/webhook', (req, res) => {
 })
 
 // Función para verificar la firma del webhook
-const verifyWebhookSignature = (req, res, buf) => {
-    const secret = process.env.WEBHOOK_SECRET;
-    const hash = crypto.createHmac('sha256', secret)
-                       .update(buf)
-                       .digest('hex');
-    const signature = req.headers['x-hub-signature'];
 
-    if (hash !== signature) {
-        throw new Error('Firma del webhook no válida');
-    }
-}
 
 // Middleware para verificar la firma del webhook
 app.use((req, res, next) => {
