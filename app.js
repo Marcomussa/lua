@@ -368,7 +368,28 @@ const sendConfirmationEmail = (email, orderData) => {
 
 //! Paypal
 app.get('/create-order', (req, res) => {
+    const { name, phone, email, street, city, zip, floor, state, addressDetails, shipmentProvider, shipmentDays, shipmentPrice } = req.body.metadata[0]
 
+    const order = {
+        intent: 'CAPTURE',
+        purchase_units: [ 
+            {
+                amount: {
+                    currency_code: 'MXN',
+                    value: req.body.items.unit_price
+                }
+            }
+        ],
+        application_context: {
+            brand_name: 'Lúa Cup',
+            landing_page: 'NO_PREFERENCE',
+            user_action: 'PAY NOW',
+            return_url: 'https://luacup.onrender.com/capture-order',
+            cancel_url: 'https://luaucup.onrender.com/cancel-order'
+        }
+    }
+
+    axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order)
 })
 
 app.get('/capture-order', (req, res) => {
@@ -384,4 +405,3 @@ app.listen(3000, () => {
     console.log("Server on Port 3000")
 })
 
-module.exports.handler = serverless(app)
