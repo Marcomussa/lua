@@ -8,6 +8,7 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const serverless = require('serverless-http')
           
 //! SDK de Mercado Pago
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago')
@@ -365,7 +366,22 @@ const sendConfirmationEmail = (email, orderData) => {
     });
 }
 
+//! Paypal
+app.get('/create-order', (req, res) => {
+
+})
+
+app.get('/capture-order', (req, res) => {
+    
+})
+
+app.get('/cancel-order', (req, res) => {
+    
+})
+
 //! Server
 app.listen(3000, () => {
     console.log("Server on Port 3000")
 })
+
+module.exports.handler = serverless(app)

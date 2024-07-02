@@ -145,7 +145,7 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
     //* Calculo final de precio
     order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
      
-    const response = await fetch('https://luacup.onrender.com/create-preference', {
+    const responseMP = await fetch('https://luacup.onrender.com/create-preference', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -153,8 +153,17 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
         body: JSON.stringify(order)
     })
 
-    const preference = await response.json()
-    createCheckoutButton(preference.id)
+    const responsePayPal = await fetch('https://luacup.onrender.com/create-order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order)
+    })
+
+    const preferenceMP = await responseMP.json()
+    const preferencePayPal = await responsePayPal.json()
+    createCheckoutButton(preferenceMP.id)
 }
 
 let checkoutButtonCreated = false;
