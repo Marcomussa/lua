@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     validateCheckout()
     freezeButtons()
 })
+
+const paypalContainer = document.getElementById('checkout-container')
+const paypalBtn = document.getElementById('paypal-button')
 // APP_USR-534177af-5707-41cc-852e-a44929cf1b34
 const mp = new MercadoPago('APP_USR-534177af-5707-41cc-852e-a44929cf1b34', {
     locale: 'es-MX'
@@ -55,6 +58,7 @@ let quotationTest =
 } 
      
 async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
+    paypalContainer.style.display = 'block'
     const cart = localStorage.getItem('cartItems')
     const products = JSON.parse(cart)
     const sumaQuantity = products.reduce((acumulador, currentValue) => {
@@ -145,24 +149,28 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
     //* Calculo final de precio
     order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
      
-    const responseMP = await fetch('https://luacup.onrender.com/create-preference', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(order)
-    })
+    const [responseMP, responsePayPal] = await Promise.all([
+        fetch('https://luacup.onrender.com/create-preference', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(order),
+        }),
+        fetch('http://luacup.onrender.com/create-order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(order),
+        })
+    ])
 
-    // const responsePayPal = await fetch('https://luacup.onrender.com/create-order', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(order)
-    // })
-    // const preferencePayPal = await responsePayPal.json()
-
-    const preferenceMP = await responseMP.json()
+    const [preferenceMP, preferencePayPal] = await Promise.all([
+        responseMP.json(),
+        responsePayPal.json(),
+    ]);
+    window.location.href = preferencePayPal.links[1].href
     createCheckoutButton(preferenceMP.id)
 }
 

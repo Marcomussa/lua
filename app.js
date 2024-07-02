@@ -344,9 +344,7 @@ const sendConfirmationEmail = (email, orderData) => {
 }
 
 //! Paypal
-app.get('/create-order', (req, res) => {
-    const { name, phone, email, street, city, zip, floor, state, addressDetails, shipmentProvider, shipmentDays, shipmentPrice } = req.body.metadata[0]
-
+app.post('/create-order', async (req, res) => {
     const order = {
         intent: 'CAPTURE',
         purchase_units: [ 
@@ -361,16 +359,45 @@ app.get('/create-order', (req, res) => {
             brand_name: 'Lúa Cup',
             landing_page: 'NO_PREFERENCE',
             user_action: 'PAY NOW',
-            return_url: 'https://luacup.onrender.com/capture-order',
+            return_url: 'http://localhost:3000/capture-order',
             cancel_url: 'https://luaucup.onrender.com/cancel-order'
         }
     }
 
-    axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order)
+    const params = new URLSearchParams()
+    params.append('grant_type', 'client_credentials')
+
+    const { data: {access_token} } = await axios.post(`${PAYPAL_API}/v1/oauth2/token`, params, {
+        auth: {
+            username: process.env.PAYPAL_API_CLIENT,
+            password: process.env.PAYPAL_API_SECRET
+        }
+    })
+
+    const response = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order, {
+        headers: {
+            'Authorization': `Bearer ${access_token}`
+        }
+    })
+
+    const data = response.data
+    return data
 })
 
-app.get('/capture-order', (req, res) => {
-    
+app.get('/capture-order', async (req, res) => {
+    const { token } = req.query
+
+    const response = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders/${token}/capture`, {}, {
+        auth: {
+            username: process.env.PAYPAL_API_CLIENT,
+            password: process.env.PAYPAL_API_SECRET
+        }
+    })
+
+    console.log('Paypal hook')
+    const data = await response.json()
+    console.log(data)
+    return data
 })
 
 app.get('/cancel-order', (req, res) => {
