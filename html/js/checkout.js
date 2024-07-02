@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotal()
     validateCheckout()
     freezeButtons()
+    paypalBtn.addEventListener('click', payPalOrder())
 })
 
 const paypalContainer = document.getElementById('checkout-container')
@@ -149,29 +150,27 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
     //* Calculo final de precio
     order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
      
-    const [responseMP, responsePayPal] = await Promise.all([
-        fetch('https://luacup.onrender.com/create-preference', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(order),
-        }),
-        fetch('https://luacup.onrender.com/create-order', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(order),
-        })
-    ])
+    const responseMP = await fetch('https://luacup.onrender.com/create-preference', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order)
+    })
 
-    const [preferenceMP, preferencePayPal] = await Promise.all([
-        responseMP.json(),
-        responsePayPal.json(),
-    ]);
-    window.location.href = preferencePayPal.links[1].href
+    const preferenceMP = await responseMP.json()
     createCheckoutButton(preferenceMP.id)
+}
+
+async function payPalOrder(){
+    const response = await fetch('https://luacup.onrender.com/create-order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    const data = response.json()
+    console.log(data)
 }
 
 let checkoutButtonCreated = false;
