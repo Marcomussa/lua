@@ -157,7 +157,7 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
             },
             body: JSON.stringify(order),
         }),
-        fetch('http://luacup.onrender.com/create-order', {
+        fetch('https://luacup.onrender.com/create-order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
