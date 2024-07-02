@@ -153,16 +153,16 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
         body: JSON.stringify(order)
     })
 
-    const responsePayPal = await fetch('https://luacup.onrender.com/create-order', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(order)
-    })
+    // const responsePayPal = await fetch('https://luacup.onrender.com/create-order', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(order)
+    // })
+    // const preferencePayPal = await responsePayPal.json()
 
     const preferenceMP = await responseMP.json()
-    const preferencePayPal = await responsePayPal.json()
     createCheckoutButton(preferenceMP.id)
 }
 

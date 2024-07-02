@@ -294,19 +294,6 @@ app.post('/webhook', (req, res) => {
       });
 })
 
-// Función para verificar la firma del webhook
-
-
-// Middleware para verificar la firma del webhook
-app.use((req, res, next) => {
-    try {
-        verifyWebhookSignature(req, res, req.rawBody);
-        next();
-    } catch (err) {
-        res.status(401).send('Firma del webhook no válida');
-    }
-})
-
 const sendConfirmationEmail = (email, orderData) => {
     let transporter = nodemailer.createTransport({
         service: process.env.EMAIL_SERVICE,
