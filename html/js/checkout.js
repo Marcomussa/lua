@@ -169,7 +169,7 @@ async function payPalOrder(){
             'Content-Type': 'application/json',
         }
     })
-    const data = response.json()
+    const data = await response.json()
     console.log(data)
 }
 
