@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotal()
     validateCheckout()
     freezeButtons()
+    paypalBtn.addEventListener('click', payPalOrder)
 })
 
 const paypalContainer = document.getElementById('checkout-container')
@@ -58,6 +59,7 @@ let quotationTest =
 } 
      
 async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
+    paypalContainer.style.display = 'block'
     const cart = localStorage.getItem('cartItems')
     const products = JSON.parse(cart)
     const sumaQuantity = products.reduce((acumulador, currentValue) => {
@@ -112,28 +114,24 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
     //* Calculo final de precio
     order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
      
-    const [responseMP, responsePayPal] = await Promise.all([
-        fetch('https://luacup.onrender.com/create-preference', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(order),
-        }),
-        fetch('https://luacup.onrender.com/create-order', {
-            method: 'POST',
-            body: JSON.stringify(order),
-        })
-    ]);
-      
-    const [preferenceMP, preferencePayPal] = await Promise.all([
-        responseMP.json(),
-        responsePayPal.json(),
-    ]);
-      
-    console.log(preferenceMP, preferencePayPal)
-    paypalContainer.style.display = 'block'
+    const responseMP = await fetch('https://luacup.onrender.com/create-preference', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order)
+    })
+
+    const preferenceMP = await responseMP.json()
     createCheckoutButton(preferenceMP.id)
+}
+
+async function payPalOrder(){
+    const response = await fetch('/create-order', {
+        method: 'POST',
+    })
+    const data = await response.json()
+    console.log(data)
 }
 
 let checkoutButtonCreated = false;

@@ -352,25 +352,25 @@ app.post('/create-order', async (req, res) => {
             {
                 amount: {
                     currency_code: 'MXN',
-                    value: 100
+                    value: "100"
                 }
             }
         ],
         application_context: {
-            brand_name: 'Lúa Cup',
+            brand_name: 'luacup.com',
             landing_page: 'NO_PREFERENCE',
             user_action: 'PAY NOW',
             return_url: 'http://localhost:3000/capture-order',
-            cancel_url: 'https://luaucup.onrender.com/cancel-order'
+            cancel_url: 'https://luacup.onrender.com'
         }
     }
 
     const params = new URLSearchParams()
     params.append('grant_type', 'client_credentials')
 
-    const { data: {access_token} } = await axios.post(`${process.env.PAYPAL_API}/v1/oauth2/token`, 
+    const { data: { access_token } } = await axios.post(`${process.env.PAYPAL_API}/v1/oauth2/token`, 
     params, {
-        header: {   
+        headers: {   
            "Content-Type": "application/x-www-form-urlencoded" 
         },
         auth: {
@@ -379,16 +379,19 @@ app.post('/create-order', async (req, res) => {
         }
     })
 
-    console.log(access_token)
+    console.log(`ACCESS TOKEN: ${access_token}`)
 
-    const response = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order, {
-        headers: {
-            'Authorization': `Bearer ${access_token}`
-        }
-    })
-
-    const data = response.data
-    return data
+    try {
+        const response = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access_token}`
+            }
+        })
+        return res.json(response.json()) 
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 app.get('/capture-order', async (req, res) => {
