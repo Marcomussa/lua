@@ -352,7 +352,7 @@ app.post('/create-order', async (req, res) => {
             {
                 amount: {
                     currency_code: 'MXN',
-                    value: req.body.items.unit_price
+                    value: 100
                 }
             }
         ],
@@ -368,12 +368,18 @@ app.post('/create-order', async (req, res) => {
     const params = new URLSearchParams()
     params.append('grant_type', 'client_credentials')
 
-    const { data: {access_token} } = await axios.post(`${PAYPAL_API}/v1/oauth2/token`, params, {
+    const { data: {access_token} } = await axios.post(`${process.env.PAYPAL_API}/v1/oauth2/token`, 
+    params, {
+        header: {   
+           "Content-Type": "application/x-www-form-urlencoded" 
+        },
         auth: {
             username: process.env.PAYPAL_API_CLIENT,
             password: process.env.PAYPAL_API_SECRET
         }
     })
+
+    console.log(access_token)
 
     const response = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order, {
         headers: {

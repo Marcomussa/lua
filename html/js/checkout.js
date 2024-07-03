@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotal()
     validateCheckout()
     freezeButtons()
-    paypalBtn.addEventListener('click', payPalOrder)
 })
 
 const paypalContainer = document.getElementById('checkout-container')
@@ -59,7 +58,6 @@ let quotationTest =
 } 
      
 async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
-    paypalContainer.style.display = 'block'
     const cart = localStorage.getItem('cartItems')
     const products = JSON.parse(cart)
     const sumaQuantity = products.reduce((acumulador, currentValue) => {
@@ -79,42 +77,6 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
     let city = document.querySelector("#city-order").value
     let zip = document.querySelector("#zip-order").value
     let addressDetails = document.querySelector("#details-order").value
-
-    let quotationProd = {
-    "address_from": {
-        "name": 'Sandra Kalach',
-        'company': 'Lua Cup',
-        'street1': 'Calzada de la naranja 1G',
-        'city': 'Naucalpan de Juarez', 
-        'state': 'Ciudad de Mexico',
-        'zip': '53370',
-        'phone': '+525591350245',
-        'email': 'contacto@segmail.co',
-        'country': 'MX'
-    },
-    "address_to": {
-        "name": customer.value,
-        "company": addressDetails.value,
-        "street1": street.value,
-        "city": city.value,
-        "state": state.value,
-        "zip": zip.value,
-        "phone": phone.value,
-        "email": email.value,
-        "country": "MX"
-    },
-    "parcels":[
-        {
-            "length":30,
-            "height":20,
-            "width":10,
-            "distance_unit": "cm",
-            "weight": 1, 
-            "mass_unit":"kg",
-            "reference": null
-        }
-    ]
-    } 
 
     const order = {
         items: [
@@ -150,24 +112,28 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
     //* Calculo final de precio
     order.items[0].unit_price = Number(((order.items[0].unit_price * Number(sumaQuantity)) + Number(shipmentPrice)).toFixed(2))
      
-    const responseMP = await fetch('https://luacup.onrender.com/create-preference', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(order)
-    })
-
-    const preferenceMP = await responseMP.json()
+    const [responseMP, responsePayPal] = await Promise.all([
+        fetch('https://luacup.onrender.com/create-preference', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(order),
+        }),
+        fetch('https://luacup.onrender.com/create-order', {
+            method: 'POST',
+            body: JSON.stringify(order),
+        })
+    ]);
+      
+    const [preferenceMP, preferencePayPal] = await Promise.all([
+        responseMP.json(),
+        responsePayPal.json(),
+    ]);
+      
+    console.log(preferenceMP, preferencePayPal)
+    paypalContainer.style.display = 'block'
     createCheckoutButton(preferenceMP.id)
-}
-
-async function payPalOrder(){
-    const response = await fetch('/create-order', {
-        method: 'POST',
-    })
-    const data = await response.json()
-    console.log(data)
 }
 
 let checkoutButtonCreated = false;
