@@ -131,7 +131,7 @@ async function payPalOrder(){
         method: 'POST',
     })
     const data = await response.json()
-    console.log(data)
+    window.location.href = data.links[1].href
 }
 
 let checkoutButtonCreated = false;

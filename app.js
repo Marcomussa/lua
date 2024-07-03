@@ -359,7 +359,7 @@ app.post('/create-order', async (req, res) => {
         application_context: {
             brand_name: 'luacup.com',
             landing_page: 'NO_PREFERENCE',
-            user_action: 'PAY NOW',
+            user_action: 'PAY_NOW',
             return_url: 'http://localhost:3000/capture-order',
             cancel_url: 'https://luacup.onrender.com'
         }
@@ -381,17 +381,14 @@ app.post('/create-order', async (req, res) => {
 
     console.log(`ACCESS TOKEN: ${access_token}`)
 
-    try {
-        const response = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access_token}`
-            }
-        })
-        return res.json(response.json()) 
-    } catch (error) {
-        console.log(error)
-    }
+    const response = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+        }
+    });
+
+    return res.json(response.data); // Return the correct response data
 })
 
 app.get('/capture-order', async (req, res) => {
@@ -407,7 +404,7 @@ app.get('/capture-order', async (req, res) => {
     console.log('Paypal hook')
     const data = await response.json()
     console.log(data)
-    return data
+    return res.json(data)
 })
 
 app.get('/cancel-order', (req, res) => {
