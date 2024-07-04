@@ -345,7 +345,7 @@ const sendConfirmationEmail = (email, orderData) => {
 
 //! Paypal
 app.post('/create-order', async (req, res) => {
-    console.log('paypal create order')
+    console.log("BODY:" , req.body)
     const order = {
         intent: 'CAPTURE',
         purchase_units: [ 

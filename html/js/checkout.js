@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotal()
     validateCheckout()
     freezeButtons()
-    paypalBtn.addEventListener('click', payPalOrder)
 })
 
 const paypalContainer = document.getElementById('checkout-container')
@@ -122,16 +121,15 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
         body: JSON.stringify(order)
     })
 
-    const preferenceMP = await responseMP.json()
-    createCheckoutButton(preferenceMP.id)
-}
-
-async function payPalOrder(){
     const response = await fetch('https://luacup.onrender.com/create-order', {
         method: 'POST',
+        body: JSON.stringify(order)
     })
     const data = await response.json()
-    window.location.href = data.links[1].href
+    paypalBtn.href = data.links[1].href
+
+    const preferenceMP = await responseMP.json()
+    createCheckoutButton(preferenceMP.id)
 }
 
 let checkoutButtonCreated = false;
