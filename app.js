@@ -352,8 +352,9 @@ app.post('/create-order', async (req, res) => {
             {
                 amount: {
                     currency_code: 'MXN',
-                    value: "100"
-                }
+                    value: req.body.items[0].unit_price
+                },
+                custom_id: req.body
             }
         ],
         application_context: {
