@@ -490,7 +490,7 @@ app.get('/capture-order', async (req, res) => {
         let match
         let totalCantidad = 0
 
-        while((match = regex.exec(data.description)) !== null){
+        while((match = regex.exec(orderItems[0].title)) !== null){
             totalCantidad += parseInt(match[1], 10)
         }
 
