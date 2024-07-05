@@ -89,8 +89,6 @@ app.get('/cart', (req, res) => {
 app.post('/create-preference', async (req, res) => {
     const { name, phone, email, street, city, zip, floor, state, addressDetails, shipmentProvider, shipmentDays, shipmentPrice } = req.body.metadata[0]
 
-    console.log(req.body.metadata[0])
-
     try {
         const body = {
             items: req.body.items, 
@@ -360,7 +358,7 @@ app.post('/create-order', async (req, res) => {
 
     console.log(orderData)
 
-    console.log(`Price: ${req.body.items[0].unit.price}`)
+    console.log(`Price: ${req.body.items[0].unit_price}`)
 
     const order = {
         intent: 'CAPTURE',
