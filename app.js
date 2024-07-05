@@ -266,8 +266,6 @@ app.post('/webhook', (req, res) => {
                     'description': data.description
                 }]
                     }
-
-                    console.log(orderDetails)
   
                     sendConfirmationEmail(data.metadata.customer_email, relevantData)
                     sendConfirmationEmail('luacup21@gmail.com', relevantData)
@@ -485,8 +483,59 @@ app.get('/capture-order', async (req, res) => {
             return res.status(404).send('Order not found')
         }
         console.log(`FINAL ORDER DATA: ${JSON.stringify(order)}`)
-        sendConfirmationEmailPayPal('marcomussa567@gmail.com', order)
+
+        const orderMetadata = orderData.metadata[0]
+        const orderItems = orderData.items
+        const regex = /Cantidad: (\d+)/g
+        let match
+        let totalCantidad = 0
+
+        while((match = regex.exec(data.description)) !== null){
+            totalCantidad += parseInt(match[1], 10)
+        }
+
+        let orderDetails = {
+            'address_from': {
+              'name': 'Sandra Kalach',
+              'company': 'Lua Cup',
+              'street1': 'Calzada de la naranja 1G',
+              'city': 'Naucalpan de Juarez',
+              'state': 'Ciudad de Mexico',
+              'zip': '53370',
+              'phone': '+525591350245',
+              'email': 'luacup21@gmail.com',
+              'country': 'MX'
+            },
+            'address_to': {
+              'name': orderMetadata.name,
+              'street1': orderMetadata.street,
+              'city': orderMetadata.city,
+              'state': orderMetadata.state,
+              'zip': orderMetadata.zip,
+              'country': 'MX',
+              'phone': orderMetadata.phone,
+              'email': orderMetadata.mail
+            },
+            'order_info': {
+                'shipment_type': `${orderMetadata.shipmentProvider} | ${orderMetadata.shipmentDays} dia/s`
+            },
+            'items': [{
+                'quantity': totalCantidad,
+                'price': 450,
+                'description': orderItems[0].title
+            }]
+        }
+
+        sendConfirmationEmailPayPal(orderMetadata.email, order)
+
         res.redirect('https://luacup.com')
+
+        return axios.post('https://api.myeship.co/rest/order', orderDetails, {
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': `${process.env.API_KEY_ESHIP_PROD}`
+            }
+        })
     })
     .catch(err => {
         console.error(err)

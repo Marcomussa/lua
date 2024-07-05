@@ -58,7 +58,6 @@ let quotationTest =
 } 
      
 async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
-    paypalContainer.style.display = 'block'
     const cart = localStorage.getItem('cartItems')
     const products = JSON.parse(cart)
     const sumaQuantity = products.reduce((acumulador, currentValue) => {
@@ -133,6 +132,8 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
 
     const preferenceMP = await responseMP.json()
     createCheckoutButton(preferenceMP.id)
+    
+    paypalContainer.style.display = 'block'
 }
 
 let checkoutButtonCreated = false;
@@ -158,11 +159,15 @@ function freezeButtons(){
     const currentPath = window.location.pathname
     let increaseButton = document.getElementsByClassName('increaseButton')
     let decreaseButton = document.getElementsByClassName('decreaseButton')
+    let deleteButton = document.getElementsByClassName('deleteButton')
+    let submitFrom = document.getElementById('submit-form')
     
     if(currentPath == '/quotation'){
+        submitFrom.classList.add('disabled')
         for (let i = 0; i < increaseButton.length; i++) {
            increaseButton[i].classList.add('disabled')
            decreaseButton[i].classList.add('disabled') 
+           deleteButton[i].classList.add('disabled') 
         }
     }
 }
