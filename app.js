@@ -234,7 +234,7 @@ app.post('/webhook', (req, res) => {
                   'CostoEnvio': data.metadata.customer_shipment_price,
                   'DiasEnvio': data.metadata.customer_shipment_days
                 }
-                    };
+                    }
   
                     let orderDetails = {
                 'address_from': {
@@ -266,7 +266,7 @@ app.post('/webhook', (req, res) => {
                     'price': 450,
                     'description': data.description
                 }]
-                    };
+                    }
 
                     console.log(orderDetails)
   
@@ -375,7 +375,7 @@ app.post('/create-order', async (req, res) => {
             brand_name: 'luacup.com',
             landing_page: 'NO_PREFERENCE',
             user_action: 'PAY_NOW',
-            return_url: 'http://localhost:3000/capture-order',
+            return_url: 'https://luacup.onrender.com/capture-order',
             cancel_url: 'https://luacup.onrender.com'
         }
     }
