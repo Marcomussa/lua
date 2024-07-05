@@ -407,6 +407,7 @@ const sendConfirmationEmailPayPal = (email, orderData) => {
 //! Paypal
 app.post('/create-order', async (req, res) => {
     const orderData = req.body
+    const { unit_price } = req.body.items[0]
     orderData.ID = uuidv4()
 
     console.log(`Create Order Req Body: ${JSON.stringify(orderData)}`)
@@ -417,7 +418,7 @@ app.post('/create-order', async (req, res) => {
             {
                 amount: {
                     currency_code: 'MXN',
-                    value: 100
+                    value: unit_price
                 },
                 custom_id: orderData.ID
             }
