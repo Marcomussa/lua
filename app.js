@@ -410,7 +410,7 @@ app.post('/create-order', async (req, res) => {
     const { unit_price } = req.body.items[0]
     orderData.ID = uuidv4()
 
-    console.log(`Create Order Req Body: ${JSON.stringify(orderData)}`)
+    //console.log(`Create Order Req Body: ${JSON.stringify(orderData)}`)
 
     const order = {
         intent: 'CAPTURE',
@@ -432,7 +432,7 @@ app.post('/create-order', async (req, res) => {
         }
     }
 
-    console.log(`Create Order: ${JSON.stringify(order)}`)
+    //console.log(`Create Order: ${JSON.stringify(order)}`)
 
     const params = new URLSearchParams()
     params.append('grant_type', 'client_credentials')
@@ -472,9 +472,9 @@ app.get('/capture-order', async (req, res) => {
 
     const data = await response.data
 
-    console.log(`Capture Order: ${JSON.stringify(data)}`)
+    //.log(`Capture Order: ${JSON.stringify(data)}`)
 
-    console.log(`Order ID Capture: ${data.purchase_units[0].payments.captures[0].custom_id}`)
+    //console.log(`Order ID Capture: ${data.purchase_units[0].payments.captures[0].custom_id}`)
 
     paypalOrdersCollection.findOne({ 
         ID: data.purchase_units[0].payments.captures[0].custom_id
@@ -483,7 +483,7 @@ app.get('/capture-order', async (req, res) => {
         if (!order) {
             return res.status(404).send('Order not found')
         }
-        console.log(`FINAL ORDER DATA: ${JSON.stringify(order)}`)
+        //console.log(`FINAL ORDER DATA: ${JSON.stringify(order)}`)
 
         const orderMetadata = order.metadata[0]
         const orderItems = order.items
