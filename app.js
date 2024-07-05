@@ -6,9 +6,8 @@ const cors = require('cors')
 const axios = require('axios');
 const path = require('path');
 const nodemailer = require('nodemailer');
-const crypto = require('crypto');
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const serverless = require('serverless-http')
+const { v4: uuidv4 } = require('uuid');
+const { MongoClient, ServerApiVersion, UUID } = require('mongodb');
           
 //! SDK de Mercado Pago
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago')
@@ -27,20 +26,31 @@ const mongo = new MongoClient(uriMongo, {
 })
 
 //! Mongo Conection & Get Payment ID's
-let db
-let paymentsCollection
+let dbPayments;
+let paymentsCollection;
+let dbPaypalOrders;
+let paypalOrdersCollection;
+
 async function connectToMongoDB() {
-    try {
-      await mongo.connect();
-      console.log('Connected to MongoDB');
-      db = mongo.db('Payments-IDs');
-      paymentsCollection = db.collection('Payments')
-    } catch (err) {
-      console.error('Error connecting to MongoDB:', err)
-      process.exit(1);
-    }
+  try {
+    await mongo.connect();
+    console.log('Connected to MongoDB');
+
+    // Conectar a la base de datos "Payments-IDs"
+    dbPayments = mongo.db('Payments-IDs');
+    paymentsCollection = dbPayments.collection('Payments');
+
+    // Conectar a la base de datos "Paypal-Orders"
+    dbPaypalOrders = mongo.db('Paypal-Orders');
+    paypalOrdersCollection = dbPaypalOrders.collection('Paypal-Orders');
+
+  } catch (err) {
+    console.error('Error connecting to MongoDB:', err);
+    process.exit(1);
+  }
 }
-connectToMongoDB()
+
+connectToMongoDB();
 
 
 //! Express Settings  
@@ -345,16 +355,20 @@ const sendConfirmationEmail = (email, orderData) => {
 
 //! Paypal
 app.post('/create-order', async (req, res) => {
-    console.log("BODY:" , req.body)
+    const orderData = req.body
+    orderData.ID = uuidv4()
+
+    console.log(orderData)
+
     const order = {
         intent: 'CAPTURE',
         purchase_units: [ 
             {
                 amount: {
                     currency_code: 'MXN',
-                    value: "100"
+                    value: 100
                 },
-                custom_id: JSON.stringify(order)
+                custom_id: orderData.ID
             }
         ],
         application_context: {
@@ -380,8 +394,6 @@ app.post('/create-order', async (req, res) => {
         }
     })
 
-    console.log(`ACCESS TOKEN: ${access_token}`)
-
     const response = await axios.post(`${process.env.PAYPAL_API}/v2/checkout/orders`, order, {
         headers: {
             'Content-Type': 'application/json',
@@ -389,7 +401,9 @@ app.post('/create-order', async (req, res) => {
         }
     });
 
-    return res.json(response.data); // Return the correct response data
+    await paypalOrdersCollection.insertOne(orderData)
+
+    return res.json(response.data); 
 })
 
 app.get('/capture-order', async (req, res) => {
@@ -402,10 +416,26 @@ app.get('/capture-order', async (req, res) => {
         }
     })
 
-    console.log('Paypal hook')
     const data = await response.json()
-    console.log(data)
-    return res.json(data)
+
+    paypalOrdersCollection.findOne({ 
+        ID: id 
+    })
+    .then(order => {
+        if (!order) {
+            return res.status(404).send('Order not found')
+        }
+        console.log(order)
+        res.status(200).json(order)
+    })
+    .catch(err => {
+        console.error(err)
+        res.status(500).send('Internal Server Error')
+    });
+
+    console.log('Paypal hook')
+
+    return res.sendStatus(200)
 })
 
 app.get('/cancel-order', (req, res) => {
