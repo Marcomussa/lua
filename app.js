@@ -171,7 +171,8 @@ app.post('/quotation', async (req, res) => {
                 "mass_unit":"kg",
                 "reference":"Lua Cup"
             }
-        ]
+        ],
+        "save_order": false
 } 
     const response = await axios.post('https://api.myeship.co/rest/quotation', quotation, {
         headers: {
@@ -351,6 +352,60 @@ const sendConfirmationEmail = (email, orderData) => {
     });
 }
 
+const sendConfirmationEmailPayPal = (email, orderData) => {
+    const orderMetadata = orderData.metadata[0]
+    const orderItems = orderData.items
+
+    let transporter = nodemailer.createTransport({
+        service: process.env.EMAIL_SERVICE,
+        port: process.env.EMAIL_PORT, 
+        secure: true,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }, 
+        tls: {
+            rejectUnauthorized: false
+        }
+    })
+
+    let mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Confirmación de Pedido',
+        text: ``,
+        html: `
+            <h1>¡Recibimos tu Pedido, muchas gracias por confiar en Lúa Cup!</h1>
+            <h2>Sus datos son los siguientes:</h2> 
+            <b>Nombre y Apellido: ${orderMetadata.name} </b> <br>
+            <b>Email: ${orderMetadata.email} </b> <br>
+            <b>Direccion: ${orderMetadata.street}</b>  <br>
+            <b>Piso: ${orderMetadata.floor} </b> <br>
+            <b>Estado: ${orderMetadata.state}</b>  <br>
+            <b>Ciudad: ${orderMetadata.city} </b> <br>
+            <b>ZIP: ${orderMetadata.zip} </b> <br>
+            <b>Detalles extras de la direccion: ${orderMetadata.addressDetails}</b>  <br>
+            <b>Detalles de la orden: ${orderItems[0].title}</b>  <br>
+            <b>Precio Total: ${orderItems[0].unit_price}</b>
+            <b>Detalles del metodo de envio: 
+                <ul>
+                    <li>Proveedor: ${orderMetadata.shipmentProvider} </li>
+                    <li>Costo de envio: $${orderMetadata.shipmentPrice}</li>
+                    <li>Dias: ${orderMetadata.shipmentDays} Dia/s</li>
+                </ul>
+            <br>
+
+            <h3>¡Muchas gracias! Despacharemos tu pedido hoy mismo.</h3>`
+    }
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Email enviado: ' + info.response);
+    });
+}
+
 //! Paypal
 app.post('/create-order', async (req, res) => {
     const orderData = req.body
@@ -430,6 +485,7 @@ app.get('/capture-order', async (req, res) => {
             return res.status(404).send('Order not found')
         }
         console.log(`FINAL ORDER DATA: ${JSON.stringify(order)}`)
+        sendConfirmationEmailPayPal('marcomussa567@gmail.com', order)
         res.redirect('https://luacup.com')
     })
     .catch(err => {
