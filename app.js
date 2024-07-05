@@ -165,11 +165,11 @@ app.post('/quotation', async (req, res) => {
         },
         "parcels":[
             {
-                "length":30,
-                "height":20,
-                "width":10,
+                "length":7,
+                "height":8,
+                "width":7,
                 "distance_unit":"cm",
-                "weight":0.25,
+                "weight":0.5,
                 "mass_unit":"kg",
                 "reference":"Lua Cup"
             }
@@ -360,6 +360,8 @@ app.post('/create-order', async (req, res) => {
 
     console.log(orderData)
 
+    console.log(`Price: ${req.body.items[0].unit.price}`)
+
     const order = {
         intent: 'CAPTURE',
         purchase_units: [ 
@@ -416,10 +418,12 @@ app.get('/capture-order', async (req, res) => {
         }
     })
 
-    const data = await response.json()
+    const data = await response.data
+
+    console.log(data)
 
     paypalOrdersCollection.findOne({ 
-        ID: id 
+        ID: 'a'
     })
     .then(order => {
         if (!order) {
