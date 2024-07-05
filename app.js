@@ -356,9 +356,7 @@ app.post('/create-order', async (req, res) => {
     const orderData = req.body
     orderData.ID = uuidv4()
 
-    console.log(orderData)
-
-    console.log(`Price: ${req.body.items[0].unit_price}`)
+    console.log(`Create Order Req Body: ${orderData}`)
 
     const order = {
         intent: 'CAPTURE',
@@ -379,6 +377,8 @@ app.post('/create-order', async (req, res) => {
             cancel_url: 'https://luacup.onrender.com'
         }
     }
+
+    console.log(`Create Order: ${order}`)
 
     const params = new URLSearchParams()
     params.append('grant_type', 'client_credentials')
@@ -418,7 +418,7 @@ app.get('/capture-order', async (req, res) => {
 
     const data = await response.data
 
-    console.log(data)
+    console.log(`Capture Order: ${data}`)
 
     paypalOrdersCollection.findOne({ 
         ID: 'a'
@@ -433,11 +433,9 @@ app.get('/capture-order', async (req, res) => {
     .catch(err => {
         console.error(err)
         res.status(500).send('Internal Server Error')
-    });
+    })
 
-    console.log('Paypal hook')
-
-    return res.sendStatus(200)
+    return res.redirect('https://luacup.onrender.com')
 })
 
 app.get('/cancel-order', (req, res) => {
