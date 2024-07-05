@@ -484,8 +484,8 @@ app.get('/capture-order', async (req, res) => {
         }
         console.log(`FINAL ORDER DATA: ${JSON.stringify(order)}`)
 
-        const orderMetadata = orderData.metadata[0]
-        const orderItems = orderData.items
+        const orderMetadata = order.metadata[0]
+        const orderItems = order.items
         const regex = /Cantidad: (\d+)/g
         let match
         let totalCantidad = 0
