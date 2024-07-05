@@ -403,7 +403,7 @@ app.post('/create-order', async (req, res) => {
 
     await paypalOrdersCollection.insertOne(orderData)
 
-    return res.json(response.data); 
+    return res.json(response.data)
 })
 
 app.get('/capture-order', async (req, res) => {
@@ -420,22 +420,22 @@ app.get('/capture-order', async (req, res) => {
 
     console.log(`Capture Order: ${JSON.stringify(data)}`)
 
-    // paypalOrdersCollection.findOne({ 
-    //     ID: 'a'
-    // })
-    // .then(order => {
-    //     if (!order) {
-    //         return res.status(404).send('Order not found')
-    //     }
-    //     console.log(order)
-    //     res.status(200).json(order)
-    // })
-    // .catch(err => {
-    //     console.error(err)
-    //     res.status(500).send('Internal Server Error')
-    // })
+    console.log(`Order ID Capture: ${purchase_units[0].payments.captures[0].custom_id}`)
 
-    return res.redirect('https://luacup.onrender.com')
+    paypalOrdersCollection.findOne({ 
+        ID: data.purchase_units[0].payments.captures[0].custom_id
+    })
+    .then(order => {
+        if (!order) {
+            return res.status(404).send('Order not found')
+        }
+        console.log(`FINAL ORDER DATA: ${JSON.stringify(order)}`)
+        res.redirect('https://luacup.com')
+    })
+    .catch(err => {
+        console.error(err)
+        res.status(500).send('Internal Server Error')
+    })
 })
 
 app.get('/cancel-order', (req, res) => {
