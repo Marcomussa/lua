@@ -121,7 +121,7 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
         body: JSON.stringify(order)
     })
 
-    const response = await fetch('/create-order', {
+    const response = await fetch('https://luacup.onrender.com/create-order', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

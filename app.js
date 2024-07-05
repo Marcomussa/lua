@@ -41,8 +41,8 @@ async function connectToMongoDB() {
     paymentsCollection = dbPayments.collection('Payments');
 
     // Conectar a la base de datos "Paypal-Orders"
-    dbPaypalOrders = mongo.db('Paypal-Orders');
-    paypalOrdersCollection = dbPaypalOrders.collection('Paypal-Orders');
+    dbPaypalOrders = mongo.db('pp-orders');
+    paypalOrdersCollection = dbPaypalOrders.collection('orders');
 
   } catch (err) {
     console.error('Error connecting to MongoDB:', err);
