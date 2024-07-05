@@ -420,20 +420,22 @@ app.get('/capture-order', async (req, res) => {
 
     console.log(`Capture Order: ${data}`)
 
-    paypalOrdersCollection.findOne({ 
-        ID: 'a'
-    })
-    .then(order => {
-        if (!order) {
-            return res.status(404).send('Order not found')
-        }
-        console.log(order)
-        res.status(200).json(order)
-    })
-    .catch(err => {
-        console.error(err)
-        res.status(500).send('Internal Server Error')
-    })
+    // paypalOrdersCollection.findOne({ 
+    //     ID: 'a'
+    // })
+    // .then(order => {
+    //     if (!order) {
+    //         return res.status(404).send('Order not found')
+    //     }
+    //     console.log(order)
+    //     res.status(200).json(order)
+    // })
+    // .catch(err => {
+    //     console.error(err)
+    //     res.status(500).send('Internal Server Error')
+    // })
+
+    return res.redirect('https://luacup.onrender.com')
 })
 
 app.get('/cancel-order', (req, res) => {
