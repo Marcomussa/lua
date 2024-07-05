@@ -420,7 +420,7 @@ app.get('/capture-order', async (req, res) => {
 
     console.log(`Capture Order: ${JSON.stringify(data)}`)
 
-    console.log(`Order ID Capture: ${purchase_units[0].payments.captures[0].custom_id}`)
+    console.log(`Order ID Capture: ${data.purchase_units[0].payments.captures[0].custom_id}`)
 
     paypalOrdersCollection.findOne({ 
         ID: data.purchase_units[0].payments.captures[0].custom_id
