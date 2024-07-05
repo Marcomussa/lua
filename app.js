@@ -356,7 +356,7 @@ app.post('/create-order', async (req, res) => {
     const orderData = req.body
     orderData.ID = uuidv4()
 
-    console.log(`Create Order Req Body: ${orderData}`)
+    console.log(`Create Order Req Body: ${JSON.stringify(orderData)}`)
 
     const order = {
         intent: 'CAPTURE',
@@ -378,7 +378,7 @@ app.post('/create-order', async (req, res) => {
         }
     }
 
-    console.log(`Create Order: ${order}`)
+    console.log(`Create Order: ${JSON.stringify(order)}`)
 
     const params = new URLSearchParams()
     params.append('grant_type', 'client_credentials')
@@ -418,7 +418,7 @@ app.get('/capture-order', async (req, res) => {
 
     const data = await response.data
 
-    console.log(`Capture Order: ${data}`)
+    console.log(`Capture Order: ${JSON.stringify(data)}`)
 
     // paypalOrdersCollection.findOne({ 
     //     ID: 'a'
