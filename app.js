@@ -71,6 +71,18 @@ app.get('/luacup', (req, res) => {
     res.render('luacup')
 })
 
+app.get('/blog', (req, res) => {
+    res.render('blog')
+})
+
+app.get('/higiene-menstrual', (req, res) => {
+    res.render('higiene')
+})
+
+app.get('/pobreza-menstrual', (req, res) => {
+    res.render('pobreza')
+})
+
 app.get('/cart', (req, res) => {
     res.render('cart', {
         result: null,

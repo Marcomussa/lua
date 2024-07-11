@@ -128,11 +128,12 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
         body: JSON.stringify(order)
     })
     const data = await response.json()
+    console.log(data)
     paypalBtn.href = data.links[1].href
 
     const preferenceMP = await responseMP.json()
     createCheckoutButton(preferenceMP.id)
-    
+
     paypalContainer.style.display = 'block'
 }
 
