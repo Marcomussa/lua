@@ -193,6 +193,8 @@ app.post('/quotation', async (req, res) => {
         }
     })
 
+    console.log(response.data)
+
     res.render('cart', { 
         result: response.data ? response.data : '',
         name: name,

@@ -105,12 +105,12 @@ async function createOrder(shipmentPrice, shipmentProvider, shipmentDays){
         ]
     }
 
-    if(state == 'Ciudad de Mexico'){
+    if(state == 'Ciudad de Mexico' && shipmentProvider == 'Segmail'){
         order.metadata.shipmentPrice = 0
     } else {
         order.metadata.shipmentPrice = shipmentPrice
     }
-    
+
     order.metadata.shipmentProvider = shipmentProvider
     order.metadata.shipmentDays = shipmentDays
     

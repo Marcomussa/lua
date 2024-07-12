@@ -194,31 +194,38 @@
                           <% if (result && result.rates && result.rates.length > 0) { %>
                             <% result.rates.forEach(rate => { %>
                               <% if (state === "Ciudad de Mexico") { %>
-                                <% rate.amount = 0; %>
+                                <% if (rate.provider === "Segmail") { %>
+                                  <% rate.amount = 0; %>
+                                <% } %>
                               <% } %>
-                              <button style="background: none; width: 33%; border: none; text-align: left;"
-                                onclick="createOrder('<%= rate.amount %>', '<%= rate.provider %>', '<%= rate.days %>')"
-                                id="button-quotation">
-                                <div class="quotation col-md-12 bg-light-gray" style="display: inline-block; padding: 20px;">
-                                  <p class="mb-5px fw-600 rateProvider"><%= rate.provider %></p>
-                                  <p class="mb-5px"><span class="fw-600 rateDays"><%= rate.days %> </span>Días</p>
-                                  <p class="mb-5px">Envio: <span class="fw-600"><%= rate.amount %></span></p>
-                                  <p class="mb-5px"><%= rate.currency %></p>
-                                </div>
-                              </button>
+                              <% if (rate.provider !== "FedEx" && rate.provider !== "Estafeta") { %>
+                                <button style="background: none; width: 33%; border: none; text-align: left;"
+                                  onclick="createOrder('<%= rate.amount %>', '<%= rate.provider %>', '<%= rate.days %>')"
+                                  id="button-quotation"
+                                  class="mb-10px">
+                                  <div class="quotation col-md-12 bg-light-gray" style="display: inline-block; padding: 20px;">
+                                    <p class="mb-5px fw-600 rateProvider"><%= rate.provider %></p>
+                                    <p class="mb-5px"><span class="fw-600 rateDays"><%= rate.days %> </span>Días</p>
+                                    <p class="mb-5px">Envio: <span class="fw-600"><%= rate.amount %></span></p>
+                                    <p class="mb-5px"><%= rate.currency %></p>
+                                  </div>
+                                </button>
+                              <% } %>
                             <% }) %>
                           <% } else { %>
                             <p></p>
                           <% } %>
-                          
                         </div>
                         <hr>
-                        <div id="checkout-container">
-                          <a class="paypal-button" id="paypal-button" style="background: none; border: none">
-                              <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="Pay with PayPal">
-                          </a>
+                        
+                        <div class="xs-fixed-section">
+                          <div id="checkout-container">
+                            <a class="paypal-button" id="paypal-button" style="background: none; border: none">
+                                <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="Pay with PayPal">
+                            </a>
+                          </div>
+                          <div id="wallet_container"></div>
                         </div>
-                        <div id="wallet_container"></div>
 
                     </div> 
                     <div class="col-lg-6 align-self-end contact-form-style-03 sm-mb-50px"> 

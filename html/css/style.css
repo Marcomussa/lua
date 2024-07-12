@@ -19480,6 +19480,19 @@ body > div.page-layout > section.pb-0.top-space-padding.bg-main-lua.full-screen.
 }
 
 @media only screen and (max-width: 500px){
+  .xs-fixed-section {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  width: 100%;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  }
+  .extra-very-small-screen {
+    height: 100px !important;
+  }
   .quotation {
     display: block !important;
   }
